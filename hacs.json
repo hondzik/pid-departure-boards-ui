@@ -1,0 +1,7 @@
+{
+  "name": "Lovelace Cards for PID Departure Boards",
+  "render_readme": true,
+  "filename": "pid-departure-boards-ui.js",
+  "content_in_root": false,
+  "homeassistant": "2026.9.0"
+}
