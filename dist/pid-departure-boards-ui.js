@@ -105,6 +105,23 @@ var e="https://github.com/hondzik/pid-departure-boards-ui";function t(e,t,i,s){v
     --mdc-icon-size: 18px;
   }
 
+  tr.at-stop {
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    tr.at-stop {
+      animation: none;
+      background: var(--secondary-background-color);
+    }
+  }
+
   tr.canceled td {
     text-decoration: line-through;
     opacity: 0.55;
@@ -187,9 +204,9 @@ var e="https://github.com/hondzik/pid-departure-boards-ui";function t(e,t,i,s){v
                 </table>`}
         ${(i.infotexts??[]).length>0?K`<div class="infotexts">${i.infotexts.map(e=>K`<div>${e.text}</div>`)}</div>`:Z}
       </ha-card>
-    `}_renderDeparture(e,t){const i=this._config,s=i.time_display??"both",r=ft(e),a=this.hass?.locale?.language??"en",n=r?function(e,t){return Math.floor((e.getTime()-t.getTime())/6e4)}(r,this._now):void 0,o=void 0===n?"":n<=0?t("card.now"):`${n} ${t("card.min")}`,d=r?function(e,t,i){return new Intl.DateTimeFormat(t,{hour:"2-digit",minute:"2-digit",hour12:!1,timeZone:i}).format(e)}(r,a,this.hass?.config?.time_zone):"",l=i.show_wheelchair??!0,c=i.show_air_conditioned??!0,h=e.canceled?t("card.canceled"):e.at_stop?t("card.at_stop"):"";return K`
-      <tr class=${e.canceled?"canceled":""}>
-        <td class="icon"><ha-icon icon=${p=e.route_type,null!==p&&bt[p]||"mdi:bus"}></ha-icon></td>
+    `}_renderDeparture(e,t){const i=this._config,s=i.time_display??"both",r=ft(e),a=this.hass?.locale?.language??"en",n=r?function(e,t){return Math.floor((e.getTime()-t.getTime())/6e4)}(r,this._now):void 0,o=void 0===n?"":n<=0?t("card.now"):`${n} ${t("card.min")}`,d=r?function(e,t,i){return new Intl.DateTimeFormat(t,{hour:"2-digit",minute:"2-digit",hour12:!1,timeZone:i}).format(e)}(r,a,this.hass?.config?.time_zone):"",l=i.show_wheelchair??!0,c=i.show_air_conditioned??!0,h=e.canceled?t("card.canceled"):"",p=e.at_stop&&!e.canceled;return K`
+      <tr class=${e.canceled?"canceled":p?"at-stop":""} title=${p?t("card.at_stop"):Z}>
+        <td class="icon"><ha-icon icon=${_=e.route_type,null!==_&&bt[_]||"mdi:bus"}></ha-icon></td>
         <td class="line">${e.route}</td>
         <td class="headsign">${e.headsign??""}${h?K`<span class="state">${h}</span>`:Z}</td>
         ${"time"!==s?K`<td class="countdown">${o}</td>`:Z} ${"countdown"!==s?K`<td class="time">${d}</td>`:Z}
@@ -197,4 +214,4 @@ var e="https://github.com/hondzik/pid-departure-boards-ui";function t(e,t,i,s){v
         ${l?K`<td class="feature">${e.wheelchair?K`<ha-icon icon="mdi:wheelchair" .title=${t("card.wheelchair")}></ha-icon>`:Z}</td>`:Z}
         ${c?K`<td class="feature">${e.air_conditioned?K`<ha-icon icon="mdi:snowflake" .title=${t("card.air_conditioned")}></ha-icon>`:Z}</td>`:Z}
       </tr>
-    `;var p}};xt.styles=wt,t([_e({attribute:!1})],xt.prototype,"hass",void 0),t([ue()],xt.prototype,"_config",void 0),t([ue()],xt.prototype,"_now",void 0),t([ue()],xt.prototype,"_refreshing",void 0),xt=t([ce(zt)],xt),window.customCards=window.customCards||[],window.customCards.push({type:zt,name:"PID Departure Board",description:"Departure board for a PID stop (pid_departure_boards integration)",preview:!1}),function(){const t="padding: 2px 4px; font-family: Roboto,Verdana,Geneva,sans-serif;",i=`background-color: rgb(255, 127, 15); color: rgb(0, 0, 49); ${t}`,s=`background-color: rgb(0, 0, 49); color: rgb(255, 127, 15); ${t}`;console.groupCollapsed("%cLovelace Cards for PID Departure Boards%c0.1.0",i,s),console.info("Lovelace Cards for PID Departure Boards"),console.info(`Github: ${e}`),console.groupEnd()}();
+    `;var _}};xt.styles=wt,t([_e({attribute:!1})],xt.prototype,"hass",void 0),t([ue()],xt.prototype,"_config",void 0),t([ue()],xt.prototype,"_now",void 0),t([ue()],xt.prototype,"_refreshing",void 0),xt=t([ce(zt)],xt),window.customCards=window.customCards||[],window.customCards.push({type:zt,name:"PID Departure Board",description:"Departure board for a PID stop (pid_departure_boards integration)",preview:!1}),function(){const t="padding: 2px 4px; font-family: Roboto,Verdana,Geneva,sans-serif;",i=`background-color: rgb(255, 127, 15); color: rgb(0, 0, 49); ${t}`,s=`background-color: rgb(0, 0, 49); color: rgb(255, 127, 15); ${t}`;console.groupCollapsed("%cLovelace Cards for PID Departure Boards%c0.1.0",i,s),console.info("Lovelace Cards for PID Departure Boards"),console.info(`Github: ${e}`),console.groupEnd()}();

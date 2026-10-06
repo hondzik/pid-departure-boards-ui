@@ -56,7 +56,7 @@ V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na
 
 - Řádek obsahuje ikonu vozidla, číslo linky, cíl, čas do odjezdu a/nebo čas odjezdu, zpoždění (`+5`, jen když má vůz zpoždění) a ikony bezbariérovosti a klimatizace.
 - Zobrazený čas je predikovaný, pokud ho API má, jinak podle jízdního řádu. Odjezdy, které už odjely, samy zmizí.
-- Zrušené spoje jsou přeškrtnuté; vůz, který právě stojí v zastávce, je označen „na zastávce".
+- Zrušené spoje jsou přeškrtnuté; řádek bliká, dokud vůz stojí v zastávce (po najetí myší se zobrazí „na zastávce"; při zapnutém omezení animací se řádek místo toho zvýrazní).
 - Oznámení (např. výluky) z integrace jsou vypsána pod odjezdy.
 - Stav senzoru se mění jen při aktualizaci integrace, takže odpočet „za X min" počítá karta sama.
 - **Aktualizace:** tlačítko vpravo nahoře obnoví senzor okamžitě. Navíc karta obnovuje senzor každou minutu od chvíle, kdy je nejbližší odjezd blíž než nastavený počet minut. Pro všechny karty na stránce běží jeden sdílený časovač, senzory splatné ve stejnou chvíli se obnoví jedním voláním a více karet se stejným senzorem ho obnoví jen jednou — víc karet tak nevyčerpá limit požadavků API Golemio.

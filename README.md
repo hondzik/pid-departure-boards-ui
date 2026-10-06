@@ -56,7 +56,7 @@ The card shows the stop name and platform in the header and one row per upcoming
 
 - Each row has a vehicle icon, the line number, the destination, the time until departure and/or the departure clock time, the delay (`+5` only when the vehicle is late) and the wheelchair / air-conditioning icons.
 - The clock time is the predicted time when the API has one, otherwise the timetable time. Departures that are already gone disappear on their own.
-- Canceled departures are struck through; a vehicle standing at the stop is marked "at the stop".
+- Canceled departures are struck through; a row blinks while the vehicle is standing at the stop (hover shows "at the stop"; with reduced motion enabled the row is highlighted instead).
 - Notices (e.g. closures) from the integration are listed below the departures.
 - The sensor itself only changes when the integration updates, so the "in X min" countdown is computed by the card.
 - **Refresh:** the button in the top right corner refreshes the sensor immediately. In addition, once the next departure is closer than the configured number of minutes the card refreshes the sensor every minute. One shared timer serves all cards on the page, sensors due at the same time are refreshed in a single call and several cards showing the same sensor refresh it only once — so many cards don't exhaust the Golemio API rate limit.

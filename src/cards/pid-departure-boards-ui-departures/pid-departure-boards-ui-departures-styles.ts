@@ -108,6 +108,23 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
     --mdc-icon-size: 18px;
   }
 
+  tr.at-stop {
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    tr.at-stop {
+      animation: none;
+      background: var(--secondary-background-color);
+    }
+  }
+
   tr.canceled td {
     text-decoration: line-through;
     opacity: 0.55;

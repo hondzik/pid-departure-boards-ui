@@ -134,10 +134,11 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
     const clock = time ? formatTime(time, language, this.hass?.config?.time_zone) : '';
     const wheelchairColumn = config.show_wheelchair ?? true;
     const airConditionedColumn = config.show_air_conditioned ?? true;
-    const note = departure.canceled ? localize('card.canceled') : departure.at_stop ? localize('card.at_stop') : '';
+    const note = departure.canceled ? localize('card.canceled') : '';
+    const atStop = departure.at_stop && !departure.canceled;
 
     return html`
-      <tr class=${departure.canceled ? 'canceled' : ''}>
+      <tr class=${departure.canceled ? 'canceled' : atStop ? 'at-stop' : ''} title=${atStop ? localize('card.at_stop') : nothing}>
         <td class="icon"><ha-icon icon=${routeIcon(departure.route_type)}></ha-icon></td>
         <td class="line">${departure.route}</td>
         <td class="headsign">${departure.headsign ?? ''}${note ? html`<span class="state">${note}</span>` : nothing}</td>
