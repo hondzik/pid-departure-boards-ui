@@ -55,8 +55,9 @@ var e="https://github.com/hondzik/pid-departure-boards-ui";function t(e,t,i,s){v
   }
 
   .icon {
-    width: 30px;
-    text-align: center;
+    width: 24px;
+    padding-left: 0;
+    text-align: left;
     color: var(--secondary-text-color);
   }
 

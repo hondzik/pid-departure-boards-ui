@@ -24,7 +24,7 @@
 
 ## Description
 
-This is a custom Home Assistant Lovelace **card** that shows a departure board for a stop of the Prague Integrated Transport (PID) — line, destination, time until departure, delay and accessibility info. It reads the data from the [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) integration and never talks to the Golemio API itself. The look is inspired by the [MMM-PID](https://github.com/lucasbotka/MMM-PID) MagicMirror module.
+This is a custom Home Assistant Lovelace **card** that shows a departure board for a stop of the Prague Integrated Transport (PID) — line, destination, time until departure, delay and accessibility info. It reads the data from the [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) integration and never talks to the Golemio API itself.
 
 ![Departure board overview](docs/images/placeholder.svg)
 

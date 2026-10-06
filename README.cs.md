@@ -24,7 +24,7 @@
 
 ## Popis
 
-Vlastní Lovelace **karta** pro Home Assistant, která zobrazuje odjezdovou tabuli zastávky Pražské integrované dopravy (PID) — linku, cíl, čas do odjezdu, zpoždění a informace o bezbariérovosti. Data čte z integrace [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) a sama nikdy nevolá API Golemio. Vzhled vychází z modulu [MMM-PID](https://github.com/lucasbotka/MMM-PID) pro MagicMirror.
+Vlastní Lovelace **karta** pro Home Assistant, která zobrazuje odjezdovou tabuli zastávky Pražské integrované dopravy (PID) — linku, cíl, čas do odjezdu, zpoždění a informace o bezbariérovosti. Data čte z integrace [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) a sama nikdy nevolá API Golemio.
 
 ![Přehled odjezdové tabule](docs/images/placeholder.svg)
 

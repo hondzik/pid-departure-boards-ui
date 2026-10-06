@@ -58,8 +58,9 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   }
 
   .icon {
-    width: 30px;
-    text-align: center;
+    width: 24px;
+    padding-left: 0;
+    text-align: left;
     color: var(--secondary-text-color);
   }
 
