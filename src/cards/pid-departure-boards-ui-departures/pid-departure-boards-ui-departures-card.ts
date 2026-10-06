@@ -1,7 +1,7 @@
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import setupCustomlocalize from '../../localize';
-import { departureTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, visibleDepartures } from '../../utils/departures';
+import { departureTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, scheduledTime, visibleDepartures } from '../../utils/departures';
 import { INTEGRATION, refreshScheduler } from '../../utils/refresh-scheduler';
 import { PidDeparturesCardStyles } from './pid-departure-boards-ui-departures-styles';
 import type { HomeAssistant } from 'custom-card-helpers';
@@ -131,7 +131,8 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
     const minutes = time ? minutesUntil(time, this._now) : undefined;
 
     const countdown = minutes === undefined ? '' : minutes <= 0 ? localize('card.now') : `${minutes} ${localize('card.min')}`;
-    const clock = time ? formatTime(time, language, this.hass?.config?.time_zone) : '';
+    const timetable = scheduledTime(departure);
+    const clock = timetable ? formatTime(timetable, language, this.hass?.config?.time_zone) : '';
     const wheelchairColumn = config.show_wheelchair ?? true;
     const airConditionedColumn = config.show_air_conditioned ?? true;
     const note = departure.canceled ? localize('card.canceled') : '';

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import fixture from './fixtures/sensor.litochlebske_namesti_opatov.json';
-import { departureTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
+import { departureTime, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
 
 const departures = fixture.attributes.departures as PidDeparture[];
 const at = (iso: string) => new Date(iso);
@@ -14,6 +14,18 @@ describe('departureTime', () => {
     expect(departureTime({ ...departures[0], predicted: null })?.toISOString()).toBe(at('2026-10-06T13:13:00+02:00').toISOString());
     expect(departureTime({ ...departures[0], predicted: null, scheduled: null })).toBeUndefined();
     expect(departureTime({ ...departures[0], predicted: 'nonsense' })).toBeUndefined();
+  });
+});
+
+describe('scheduledTime', () => {
+  it('always prefers the timetable time, even when a prediction exists', () => {
+    expect(scheduledTime(departures[0])?.toISOString()).toBe(at('2026-10-06T13:13:00+02:00').toISOString());
+  });
+
+  it('falls back to predicted and handles missing/invalid times', () => {
+    expect(scheduledTime({ ...departures[0], scheduled: null })?.toISOString()).toBe(at('2026-10-06T13:18:08+02:00').toISOString());
+    expect(scheduledTime({ ...departures[0], scheduled: null, predicted: null })).toBeUndefined();
+    expect(scheduledTime({ ...departures[0], scheduled: 'nonsense' })).toBeUndefined();
   });
 });
 

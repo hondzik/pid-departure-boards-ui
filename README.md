@@ -55,7 +55,7 @@ Install through [HACS](https://hacs.xyz/) using the badge below, or add this rep
 The card shows the stop name and platform in the header and one row per upcoming departure.
 
 - Each row has a vehicle icon, the line number, the destination, the time until departure and/or the departure clock time, the delay (`+5` only when the vehicle is late) and the wheelchair / air-conditioning icons.
-- The clock time is the predicted time when the API has one, otherwise the timetable time. Departures that are already gone disappear on their own.
+- The clock time is always the timetable (scheduled) time and the delay is shown next to it; the countdown, ordering and refresh use the real expected time including the delay. Departures that are already gone disappear on their own.
 - Canceled departures are struck through; a row blinks while the vehicle is standing at the stop (hover shows "at the stop"; with reduced motion enabled the row is highlighted instead).
 - Notices (e.g. closures) from the integration are listed below the departures.
 - The sensor itself only changes when the integration updates, so the "in X min" countdown is computed by the card.

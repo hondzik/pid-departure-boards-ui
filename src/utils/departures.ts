@@ -9,6 +9,15 @@ export function departureTime(departure: PidDeparture): Date | undefined {
   return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
+// Clock time shown on the board: always the timetable time (the delay is shown separately as "+m");
+// the real expected time (departureTime) drives the countdown, ordering and refresh.
+export function scheduledTime(departure: PidDeparture): Date | undefined {
+  const iso = departure.scheduled ?? departure.predicted;
+  if (!iso) return undefined;
+  const date = new Date(iso);
+  return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
 // Departures the board should show: already-departed ones are dropped, the rest sorted by time.
 export function visibleDepartures(departures: PidDeparture[], now: Date, limit?: number): PidDeparture[] {
   const result = departures

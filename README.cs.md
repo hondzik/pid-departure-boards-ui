@@ -55,7 +55,7 @@ Nainstalujte přes [HACS](https://hacs.xyz/) pomocí tlačítka níže, nebo př
 V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na každý nejbližší odjezd.
 
 - Řádek obsahuje ikonu vozidla, číslo linky, cíl, čas do odjezdu a/nebo čas odjezdu, zpoždění (`+5`, jen když má vůz zpoždění) a ikony bezbariérovosti a klimatizace.
-- Zobrazený čas je predikovaný, pokud ho API má, jinak podle jízdního řádu. Odjezdy, které už odjely, samy zmizí.
+- Zobrazený čas je vždy podle jízdního řádu a zpoždění je uvedeno vedle něj; odpočet, řazení a obnova používají reálný očekávaný čas včetně zpoždění. Odjezdy, které už odjely, samy zmizí.
 - Zrušené spoje jsou přeškrtnuté; řádek bliká, dokud vůz stojí v zastávce (po najetí myší se zobrazí „na zastávce"; při zapnutém omezení animací se řádek místo toho zvýrazní).
 - Oznámení (např. výluky) z integrace jsou vypsána pod odjezdy.
 - Stav senzoru se mění jen při aktualizaci integrace, takže odpočet „za X min" počítá karta sama.
