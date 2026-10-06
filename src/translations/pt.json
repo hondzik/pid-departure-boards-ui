@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Selecione um sensor da integração PID Departure Boards.",
+    "unavailable": "As partidas não estão disponíveis.",
+    "no_departures": "Sem partidas",
+    "refresh": "Atualizar partidas",
+    "now": "agora",
+    "min": "min",
+    "at_stop": "na paragem",
+    "canceled": "cancelado",
+    "wheelchair": "Acessível a cadeira de rodas",
+    "air_conditioned": "Ar condicionado"
+  },
+  "editor": {
+    "entity": "Sensor do painel de partidas",
+    "title": "Título (opcional)",
+    "show_wheelchair": "Mostrar acessibilidade para cadeira de rodas",
+    "show_air_conditioned": "Mostrar ar condicionado",
+    "time_display": "Apresentação da hora",
+    "time_display_time": "Hora de partida",
+    "time_display_countdown": "Tempo até à partida",
+    "time_display_both": "Ambos",
+    "refresh_lead_min": "Atualizar este número de minutos antes da próxima partida (0 = nunca)",
+    "max_departures": "Número máximo de partidas apresentadas"
+  }
+}

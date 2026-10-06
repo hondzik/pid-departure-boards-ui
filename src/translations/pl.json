@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Wybierz czujnik z integracji PID Departure Boards.",
+    "unavailable": "Odjazdy są niedostępne.",
+    "no_departures": "Brak odjazdów",
+    "refresh": "Odśwież odjazdy",
+    "now": "teraz",
+    "min": "min",
+    "at_stop": "na przystanku",
+    "canceled": "odwołany",
+    "wheelchair": "Dostępny dla wózków",
+    "air_conditioned": "Klimatyzacja"
+  },
+  "editor": {
+    "entity": "Czujnik tablicy odjazdów",
+    "title": "Tytuł (opcjonalnie)",
+    "show_wheelchair": "Pokaż dostępność dla wózków",
+    "show_air_conditioned": "Pokaż klimatyzację",
+    "time_display": "Wyświetlanie czasu",
+    "time_display_time": "Godzina odjazdu",
+    "time_display_countdown": "Czas do odjazdu",
+    "time_display_both": "Oba",
+    "refresh_lead_min": "Odświeżaj tyle minut przed następnym odjazdem (0 = nigdy)",
+    "max_departures": "Maksymalna liczba wyświetlanych odjazdów"
+  }
+}

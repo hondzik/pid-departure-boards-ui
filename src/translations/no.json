@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Velg en sensor fra integrasjonen PID Departure Boards.",
+    "unavailable": "Avganger er ikke tilgjengelige.",
+    "no_departures": "Ingen avganger",
+    "refresh": "Oppdater avganger",
+    "now": "nå",
+    "min": "min",
+    "at_stop": "ved holdeplassen",
+    "canceled": "innstilt",
+    "wheelchair": "Rullestoltilgjengelig",
+    "air_conditioned": "Klimaanlegg"
+  },
+  "editor": {
+    "entity": "Sensor for avgangstavle",
+    "title": "Tittel (valgfritt)",
+    "show_wheelchair": "Vis rullestoltilgjengelighet",
+    "show_air_conditioned": "Vis klimaanlegg",
+    "time_display": "Visning av tid",
+    "time_display_time": "Avgangstid",
+    "time_display_countdown": "Tid til avgang",
+    "time_display_both": "Begge",
+    "refresh_lead_min": "Oppdater så mange minutter før neste avgang (0 = aldri)",
+    "max_departures": "Maks antall viste avganger"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "PID Departure Boards 連携のセンサーを選択してください。",
+    "unavailable": "発車情報を利用できません。",
+    "no_departures": "発車なし",
+    "refresh": "発車情報を更新",
+    "now": "まもなく",
+    "min": "分",
+    "at_stop": "停車中",
+    "canceled": "運休",
+    "wheelchair": "車いす対応",
+    "air_conditioned": "冷房あり"
+  },
+  "editor": {
+    "entity": "発車案内センサー",
+    "title": "タイトル（任意）",
+    "show_wheelchair": "車いす対応を表示",
+    "show_air_conditioned": "冷房を表示",
+    "time_display": "時刻の表示",
+    "time_display_time": "発車時刻",
+    "time_display_countdown": "発車までの時間",
+    "time_display_both": "両方",
+    "refresh_lead_min": "次の発車の何分前に更新するか（0 = 更新しない）",
+    "max_departures": "表示する発車の最大数"
+  }
+}

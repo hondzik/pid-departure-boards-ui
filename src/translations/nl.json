@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Selecteer een sensor van de integratie PID Departure Boards.",
+    "unavailable": "Vertrektijden zijn niet beschikbaar.",
+    "no_departures": "Geen vertrekken",
+    "refresh": "Vertrektijden vernieuwen",
+    "now": "nu",
+    "min": "min",
+    "at_stop": "bij de halte",
+    "canceled": "vervallen",
+    "wheelchair": "Rolstoeltoegankelijk",
+    "air_conditioned": "Airconditioning"
+  },
+  "editor": {
+    "entity": "Sensor van het vertrekbord",
+    "title": "Titel (optioneel)",
+    "show_wheelchair": "Rolstoeltoegankelijkheid tonen",
+    "show_air_conditioned": "Airconditioning tonen",
+    "time_display": "Tijdweergave",
+    "time_display_time": "Vertrektijd",
+    "time_display_countdown": "Tijd tot vertrek",
+    "time_display_both": "Beide",
+    "refresh_lead_min": "Vernieuwen zoveel minuten vóór het volgende vertrek (0 = nooit)",
+    "max_departures": "Maximaal aantal getoonde vertrekken"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Wählen Sie einen Sensor der Integration PID Departure Boards.",
+    "unavailable": "Abfahrten sind nicht verfügbar.",
+    "no_departures": "Keine Abfahrten",
+    "refresh": "Abfahrten aktualisieren",
+    "now": "jetzt",
+    "min": "Min.",
+    "at_stop": "an der Haltestelle",
+    "canceled": "entfällt",
+    "wheelchair": "Barrierefrei",
+    "air_conditioned": "Klimatisiert"
+  },
+  "editor": {
+    "entity": "Abfahrtstafel-Sensor",
+    "title": "Titel (optional)",
+    "show_wheelchair": "Barrierefreiheit anzeigen",
+    "show_air_conditioned": "Klimaanlage anzeigen",
+    "time_display": "Zeitanzeige",
+    "time_display_time": "Abfahrtszeit",
+    "time_display_countdown": "Zeit bis zur Abfahrt",
+    "time_display_both": "Beides",
+    "refresh_lead_min": "Aktualisierung so viele Minuten vor der nächsten Abfahrt (0 = nie)",
+    "max_departures": "Maximal angezeigte Abfahrten"
+  }
+}

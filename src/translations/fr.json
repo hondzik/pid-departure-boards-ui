@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Sélectionnez un capteur de l'intégration PID Departure Boards.",
+    "unavailable": "Les départs ne sont pas disponibles.",
+    "no_departures": "Aucun départ",
+    "refresh": "Actualiser les départs",
+    "now": "maintenant",
+    "min": "min",
+    "at_stop": "à l'arrêt",
+    "canceled": "supprimé",
+    "wheelchair": "Accessible en fauteuil roulant",
+    "air_conditioned": "Climatisé"
+  },
+  "editor": {
+    "entity": "Capteur du tableau des départs",
+    "title": "Titre (facultatif)",
+    "show_wheelchair": "Afficher l'accessibilité en fauteuil roulant",
+    "show_air_conditioned": "Afficher la climatisation",
+    "time_display": "Affichage de l'heure",
+    "time_display_time": "Heure de départ",
+    "time_display_countdown": "Temps avant le départ",
+    "time_display_both": "Les deux",
+    "refresh_lead_min": "Actualiser ce nombre de minutes avant le prochain départ (0 = jamais)",
+    "max_departures": "Nombre maximal de départs affichés"
+  }
+}

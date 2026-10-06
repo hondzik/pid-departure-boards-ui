@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "בחר חיישן מהאינטגרציה PID Departure Boards.",
+    "unavailable": "היציאות אינן זמינות.",
+    "no_departures": "אין יציאות",
+    "refresh": "רענון יציאות",
+    "now": "עכשיו",
+    "min": "דק׳",
+    "at_stop": "בתחנה",
+    "canceled": "בוטל",
+    "wheelchair": "נגיש לכיסא גלגלים",
+    "air_conditioned": "ממוזג"
+  },
+  "editor": {
+    "entity": "חיישן לוח היציאות",
+    "title": "כותרת (אופציונלי)",
+    "show_wheelchair": "הצג נגישות לכיסא גלגלים",
+    "show_air_conditioned": "הצג מיזוג אוויר",
+    "time_display": "תצוגת זמן",
+    "time_display_time": "שעת יציאה",
+    "time_display_countdown": "זמן עד היציאה",
+    "time_display_both": "שניהם",
+    "refresh_lead_min": "רענון כמה דקות לפני היציאה הבאה (0 = לעולם לא)",
+    "max_departures": "מספר מרבי של יציאות מוצגות"
+  }
+}

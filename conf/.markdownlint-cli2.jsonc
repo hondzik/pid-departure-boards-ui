@@ -8,5 +8,5 @@
     // section) are a normal README pattern, not a structural mistake
     "MD024": { "siblings_only": true }
   },
-  "globs": ["README.md"]
+  "globs": ["README.md", "README.cs.md"]
 }

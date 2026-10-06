@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Välj en sensor från integrationen PID Departure Boards.",
+    "unavailable": "Avgångar är inte tillgängliga.",
+    "no_departures": "Inga avgångar",
+    "refresh": "Uppdatera avgångar",
+    "now": "nu",
+    "min": "min",
+    "at_stop": "vid hållplatsen",
+    "canceled": "inställd",
+    "wheelchair": "Rullstolsanpassad",
+    "air_conditioned": "Luftkonditionering"
+  },
+  "editor": {
+    "entity": "Sensor för avgångstavla",
+    "title": "Rubrik (valfritt)",
+    "show_wheelchair": "Visa rullstolsanpassning",
+    "show_air_conditioned": "Visa luftkonditionering",
+    "time_display": "Tidsvisning",
+    "time_display_time": "Avgångstid",
+    "time_display_countdown": "Tid till avgång",
+    "time_display_both": "Båda",
+    "refresh_lead_min": "Uppdatera så många minuter före nästa avgång (0 = aldrig)",
+    "max_departures": "Maximalt antal visade avgångar"
+  }
+}

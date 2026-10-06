@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Válasszon érzékelőt a PID Departure Boards integrációból.",
+    "unavailable": "Az indulások nem érhetők el.",
+    "no_departures": "Nincs indulás",
+    "refresh": "Indulások frissítése",
+    "now": "most",
+    "min": "perc",
+    "at_stop": "a megállóban",
+    "canceled": "törölve",
+    "wheelchair": "Kerekesszékkel megközelíthető",
+    "air_conditioned": "Légkondicionált"
+  },
+  "editor": {
+    "entity": "Indulási tábla érzékelő",
+    "title": "Cím (nem kötelező)",
+    "show_wheelchair": "Kerekesszékes hozzáférés megjelenítése",
+    "show_air_conditioned": "Klíma megjelenítése",
+    "time_display": "Idő megjelenítése",
+    "time_display_time": "Indulási idő",
+    "time_display_countdown": "Indulásig hátralévő idő",
+    "time_display_both": "Mindkettő",
+    "refresh_lead_min": "Frissítés ennyi perccel a következő indulás előtt (0 = soha)",
+    "max_departures": "Megjelenített indulások maximális száma"
+  }
+}

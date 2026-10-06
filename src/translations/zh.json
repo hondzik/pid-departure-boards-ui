@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "请选择 PID Departure Boards 集成中的传感器。",
+    "unavailable": "无法获取发车信息。",
+    "no_departures": "没有发车",
+    "refresh": "刷新发车信息",
+    "now": "即将发车",
+    "min": "分钟",
+    "at_stop": "在站内",
+    "canceled": "已取消",
+    "wheelchair": "无障碍（轮椅）",
+    "air_conditioned": "空调"
+  },
+  "editor": {
+    "entity": "发车信息板传感器",
+    "title": "标题（可选）",
+    "show_wheelchair": "显示轮椅无障碍",
+    "show_air_conditioned": "显示空调",
+    "time_display": "时间显示",
+    "time_display_time": "发车时间",
+    "time_display_countdown": "距发车时间",
+    "time_display_both": "两者",
+    "refresh_lead_min": "在下一班发车前多少分钟刷新（0 = 从不）",
+    "max_departures": "最多显示的发车数量"
+  }
+}

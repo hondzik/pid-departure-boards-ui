@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Seleccione un sensor de la integración PID Departure Boards.",
+    "unavailable": "Las salidas no están disponibles.",
+    "no_departures": "Sin salidas",
+    "refresh": "Actualizar salidas",
+    "now": "ahora",
+    "min": "min",
+    "at_stop": "en la parada",
+    "canceled": "cancelado",
+    "wheelchair": "Accesible en silla de ruedas",
+    "air_conditioned": "Aire acondicionado"
+  },
+  "editor": {
+    "entity": "Sensor del panel de salidas",
+    "title": "Título (opcional)",
+    "show_wheelchair": "Mostrar accesibilidad en silla de ruedas",
+    "show_air_conditioned": "Mostrar aire acondicionado",
+    "time_display": "Visualización de la hora",
+    "time_display_time": "Hora de salida",
+    "time_display_countdown": "Tiempo hasta la salida",
+    "time_display_both": "Ambos",
+    "refresh_lead_min": "Actualizar estos minutos antes de la próxima salida (0 = nunca)",
+    "max_departures": "Máximo de salidas mostradas"
+  }
+}

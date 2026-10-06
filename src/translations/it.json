@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Seleziona un sensore dell'integrazione PID Departure Boards.",
+    "unavailable": "Le partenze non sono disponibili.",
+    "no_departures": "Nessuna partenza",
+    "refresh": "Aggiorna partenze",
+    "now": "ora",
+    "min": "min",
+    "at_stop": "alla fermata",
+    "canceled": "soppresso",
+    "wheelchair": "Accessibile in sedia a rotelle",
+    "air_conditioned": "Aria condizionata"
+  },
+  "editor": {
+    "entity": "Sensore del tabellone partenze",
+    "title": "Titolo (facoltativo)",
+    "show_wheelchair": "Mostra accessibilità in sedia a rotelle",
+    "show_air_conditioned": "Mostra aria condizionata",
+    "time_display": "Visualizzazione dell'ora",
+    "time_display_time": "Ora di partenza",
+    "time_display_countdown": "Tempo alla partenza",
+    "time_display_both": "Entrambi",
+    "refresh_lead_min": "Aggiorna questi minuti prima della prossima partenza (0 = mai)",
+    "max_departures": "Numero massimo di partenze mostrate"
+  }
+}
