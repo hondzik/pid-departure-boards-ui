@@ -1,7 +1,7 @@
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import setupCustomlocalize from '../../localize';
-import { departureTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, scheduledTime, visibleDepartures } from '../../utils/departures';
+import { departureTime, formatTime, gridRows, layoutUnits, minutesUntil, nextDepartureTime, rowLimit, routeIcon, scheduledTime, visibleDepartures } from '../../utils/departures';
 import { INTEGRATION, refreshScheduler } from '../../utils/refresh-scheduler';
 import { PidDeparturesCardStyles } from './pid-departure-boards-ui-departures-styles';
 import type { HomeAssistant } from 'custom-card-helpers';
@@ -36,8 +36,22 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
     this._config = config;
   }
 
+  // Sections view: occupy exactly the rows of the standard cards next to it (see gridRows).
+  public getGridOptions(): { columns: number; min_columns: number; rows: number } {
+    return { columns: 12, min_columns: 6, rows: this._gridRows };
+  }
+
+  // Masonry view (50 px units): the same height as in the sections view (row height 56 px, gap 8 px).
   public getCardSize(): number {
-    return 1 + (this._config?.max_departures ?? 5);
+    return Math.ceil((this._gridRows * 64 - 8) / 50);
+  }
+
+  private get _rowLimit(): number {
+    return rowLimit(this._config?.max_departures, this._attrs?.departures?.length ?? 0);
+  }
+
+  private get _gridRows(): number {
+    return gridRows(this._rowLimit, (this._attrs?.infotexts?.length ?? 0) > 0);
   }
 
   public static getConfigElement(): HTMLElement {
@@ -95,11 +109,11 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
     }
     const attrs = stateObj.attributes as unknown as PidSensorAttributes;
     const unavailable = stateObj.state === 'unavailable';
-    const departures = visibleDepartures(attrs.departures ?? [], this._now, this._config.max_departures);
+    const departures = visibleDepartures(attrs.departures ?? [], this._now, this._rowLimit);
     const title = this._config.title || attrs.stop_name || attrs.friendly_name || '';
 
     return html`
-      <ha-card>
+      <ha-card style="--pid-units: ${layoutUnits(this._rowLimit)}">
         <div class="header">
           <div>
             <span class="stop-name">${title}</span>
@@ -109,15 +123,17 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
             <ha-icon icon="mdi:refresh"></ha-icon>
           </ha-icon-button>
         </div>
-        ${
-          unavailable
-            ? html`<div class="empty">${localize('card.unavailable')}</div>`
-            : departures.length === 0
-              ? html`<div class="empty">${localize('card.no_departures')}</div>`
-              : html`<table>
-                  ${departures.map((departure) => this._renderDeparture(departure, localize))}
-                </table>`
-        }
+        <div class="body">
+          ${
+            unavailable
+              ? html`<div class="empty">${localize('card.unavailable')}</div>`
+              : departures.length === 0
+                ? html`<div class="empty">${localize('card.no_departures')}</div>`
+                : html`<table>
+                    ${departures.map((departure) => this._renderDeparture(departure, localize))}
+                  </table>`
+          }
+        </div>
         ${(attrs.infotexts ?? []).length > 0 ? html`<div class="infotexts">${attrs.infotexts.map((info) => html`<div>${info.text}</div>`)}</div>` : nothing}
       </ha-card>
     `;
@@ -142,7 +158,7 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
       <tr class=${departure.canceled ? 'canceled' : atStop ? 'at-stop' : ''} title=${atStop ? localize('card.at_stop') : nothing}>
         <td class="icon"><ha-icon icon=${routeIcon(departure.route_type)}></ha-icon></td>
         <td class="line">${departure.route}</td>
-        <td class="headsign">${departure.headsign ?? ''}${note ? html`<span class="state">${note}</span>` : nothing}</td>
+        <td class="headsign">${departure.headsign ?? ''}${note ? html` <span class="state">${note}</span>` : nothing}</td>
         ${mode !== 'time' ? html`<td class="countdown">${countdown}</td>` : nothing} ${mode !== 'countdown' ? html`<td class="time">${clock}</td>` : nothing}
         <td class="delay">${(departure.delay_min ?? 0) > 0 ? `+${departure.delay_min}` : ''}</td>
         ${wheelchairColumn ? html`<td class="feature">${departure.wheelchair ? html`<ha-icon icon="mdi:wheelchair" .title=${localize('card.wheelchair')}></ha-icon>` : nothing}</td>` : nothing}

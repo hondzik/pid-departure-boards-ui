@@ -18,6 +18,25 @@ export function scheduledTime(departure: PidDeparture): Date | undefined {
   return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
+const DEFAULT_ROW_LIMIT = 5;
+
+// Number of departure rows the card reserves space for: the configured maximum, capped by what the sensor
+// provides (stable, unlike the number of not-yet-departed rows that changes minute by minute).
+export function rowLimit(maxDepartures: number | undefined, available: number): number {
+  if (available <= 0) return maxDepartures && maxDepartures > 0 ? maxDepartures : DEFAULT_ROW_LIMIT;
+  return maxDepartures && maxDepartures > 0 ? Math.min(maxDepartures, available) : available;
+}
+
+// Layout units: two departure rows take the height of one standard dashboard row (row height + gap), so the card
+// stays aligned with neighbouring standard cards in a sections view (header = 1 row, then 1 unit per 2 departures).
+export function layoutUnits(limit: number): number {
+  return Math.max(1, Math.ceil(limit / 2));
+}
+
+export function gridRows(limit: number, hasInfotexts: boolean): number {
+  return 1 + layoutUnits(limit) + (hasInfotexts ? 1 : 0);
+}
+
 // Departures the board should show: already-departed ones are dropped, the rest sorted by time.
 export function visibleDepartures(departures: PidDeparture[], now: Date, limit?: number): PidDeparture[] {
   const result = departures

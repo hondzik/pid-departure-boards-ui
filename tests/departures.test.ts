@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import fixture from './fixtures/sensor.litochlebske_namesti_opatov.json';
-import { departureTime, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
+import { departureTime, gridRows, layoutUnits, rowLimit, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
 
 const departures = fixture.attributes.departures as PidDeparture[];
 const at = (iso: string) => new Date(iso);
@@ -99,5 +99,26 @@ describe('routeIcon', () => {
     expect(routeIcon(11)).toBe('mdi:bus-electric');
     expect(routeIcon(null)).toBe('mdi:bus');
     expect(routeIcon(99)).toBe('mdi:bus');
+  });
+});
+
+describe('grid layout', () => {
+  it('uses the configured maximum capped by what the sensor provides', () => {
+    expect(rowLimit(undefined, 5)).toBe(5);
+    expect(rowLimit(8, 5)).toBe(5);
+    expect(rowLimit(3, 5)).toBe(3);
+    expect(rowLimit(undefined, 0)).toBe(5);
+    expect(rowLimit(4, 0)).toBe(4);
+  });
+
+  it('takes one unit per two departure rows, at least one', () => {
+    expect([0, 1, 2, 3, 4, 5, 6].map(layoutUnits)).toEqual([1, 1, 1, 2, 2, 3, 3]);
+  });
+
+  it('maps 2 rows to 2 standard cards, 4 rows to 3, and reserves a row for notices', () => {
+    expect(gridRows(2, false)).toBe(2);
+    expect(gridRows(4, false)).toBe(3);
+    expect(gridRows(5, false)).toBe(4);
+    expect(gridRows(4, true)).toBe(4);
   });
 });

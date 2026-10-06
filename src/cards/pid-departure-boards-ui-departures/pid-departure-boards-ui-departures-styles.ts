@@ -1,17 +1,29 @@
 import { css } from 'lit';
 import type { CSSResultGroup } from 'lit';
 
+// Sizing follows the sections-view grid so the card lines up with standard cards next to it:
+// header = one grid row, each --pid-units block = one grid row + gap = two departure rows.
+// --row-height / --row-gap are provided by the sections view (56 px / 8 px by default).
 export const PidDeparturesCardStyles: CSSResultGroup = css`
+  :host {
+    --pid-row: var(--row-height, 56px);
+    --pid-unit: calc(var(--pid-row) + var(--row-gap, 8px));
+  }
+
   ha-card {
     position: relative;
-    padding: 12px 16px 16px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
   }
 
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    box-sizing: border-box;
+    height: var(--pid-row);
+    padding: 0 16px;
   }
 
   .stop-name {
@@ -32,7 +44,7 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
 
   .refresh {
     --mdc-icon-button-size: 36px;
-    margin: -6px -10px -6px 0;
+    margin-right: -10px;
     color: var(--secondary-text-color);
   }
 
@@ -46,13 +58,24 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
     }
   }
 
+  .body {
+    box-sizing: border-box;
+    height: calc(var(--pid-units, 1) * var(--pid-unit));
+    padding: 0 16px;
+    overflow: hidden;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
   }
 
+  tr {
+    height: calc(var(--pid-unit) / 2);
+  }
+
   td {
-    padding: 3px 5px;
+    padding: 0 5px;
     text-align: left;
     vertical-align: middle;
   }
@@ -71,11 +94,15 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   }
 
   .headsign {
+    width: 100%;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     color: var(--primary-text-color);
   }
 
   .headsign .state {
-    display: block;
     font-size: 0.75em;
     color: var(--secondary-text-color);
   }
@@ -137,8 +164,10 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   }
 
   .infotexts {
-    margin-top: 8px;
-    padding-top: 8px;
+    box-sizing: border-box;
+    height: var(--pid-unit);
+    padding: 8px 16px;
+    overflow: auto;
     border-top: 1px solid var(--divider-color);
     font-size: 0.9em;
   }
