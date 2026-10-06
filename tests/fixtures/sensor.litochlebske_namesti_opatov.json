@@ -1,0 +1,20 @@
+{
+  "entity_id": "sensor.litochlebske_namesti_opatov",
+  "state": "2026-10-06T11:18:08+00:00",
+  "attributes": {
+    "stop_id": "U344Z1P",
+    "stop_name": "Litochlebské náměstí",
+    "platform": "A",
+    "departures": [
+      { "route": "136", "route_type": 3, "headsign": "Jižní Město", "platform": "A", "scheduled": "2026-10-06T13:13:00+02:00", "predicted": "2026-10-06T13:18:08+02:00", "delay_min": 5, "wheelchair": true, "air_conditioned": true, "is_night": false, "is_regional": false, "is_substitute": false, "canceled": false, "at_stop": true, "trip_id": "136_8163_260831", "last_stop": "Litochlebské náměstí" },
+      { "route": "213", "route_type": 3, "headsign": "Jižní Město", "platform": "A", "scheduled": "2026-10-06T13:18:00+02:00", "predicted": "2026-10-06T13:18:24+02:00", "delay_min": 0, "wheelchair": true, "air_conditioned": true, "is_night": false, "is_regional": false, "is_substitute": false, "canceled": false, "at_stop": true, "trip_id": "213_2504_260831", "last_stop": "Litochlebské náměstí" },
+      { "route": "125", "route_type": 3, "headsign": "Skalka", "platform": "A", "scheduled": "2026-10-06T13:24:00+02:00", "predicted": "2026-10-06T13:23:07+02:00", "delay_min": 0, "wheelchair": true, "air_conditioned": true, "is_night": false, "is_regional": false, "is_substitute": false, "canceled": false, "at_stop": false, "trip_id": "125_2580_260831", "last_stop": "Lihovar" },
+      { "route": "136", "route_type": 3, "headsign": "Jižní Město", "platform": "A", "scheduled": "2026-10-06T13:23:00+02:00", "predicted": "2026-10-06T13:23:43+02:00", "delay_min": 0, "wheelchair": true, "air_conditioned": true, "is_night": false, "is_regional": false, "is_substitute": false, "canceled": false, "at_stop": false, "trip_id": "136_8164_260831", "last_stop": "Lešanská" },
+      { "route": "213", "route_type": 3, "headsign": "Jižní Město", "platform": "A", "scheduled": "2026-10-06T13:28:00+02:00", "predicted": "2026-10-06T13:27:42+02:00", "delay_min": 0, "wheelchair": true, "air_conditioned": true, "is_night": false, "is_regional": false, "is_substitute": false, "canceled": false, "at_stop": false, "trip_id": "213_1487_260831", "last_stop": "Litochlebské náměstí" }
+    ],
+    "infotexts": [],
+    "device_class": "timestamp",
+    "icon": "mdi:bus-clock",
+    "friendly_name": "Litochlebské náměstí -> Opatov"
+  }
+}

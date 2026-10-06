@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Select a sensor from the PID Departure Boards integration.",
+    "unavailable": "Departures are unavailable.",
+    "no_departures": "No departures",
+    "refresh": "Refresh departures",
+    "now": "now",
+    "min": "min",
+    "at_stop": "at the stop",
+    "canceled": "canceled",
+    "wheelchair": "Wheelchair accessible",
+    "air_conditioned": "Air conditioned"
+  },
+  "editor": {
+    "entity": "Departure board sensor",
+    "title": "Title (optional)",
+    "show_wheelchair": "Show wheelchair accessibility",
+    "show_air_conditioned": "Show air conditioning",
+    "time_display": "Time display",
+    "time_display_time": "Departure time",
+    "time_display_countdown": "Time until departure",
+    "time_display_both": "Both",
+    "refresh_lead_min": "Refresh minutes before the next departure (0 = never)",
+    "max_departures": "Maximum departures shown"
+  }
+}

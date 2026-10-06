@@ -1,0 +1,26 @@
+{
+  "card": {
+    "no_entity": "Vyberte senzor z integrace PID Departure Boards.",
+    "unavailable": "Odjezdy nejsou dostupné.",
+    "no_departures": "Žádné odjezdy",
+    "refresh": "Aktualizovat odjezdy",
+    "now": "nyní",
+    "min": "min",
+    "at_stop": "na zastávce",
+    "canceled": "zrušeno",
+    "wheelchair": "Bezbariérový spoj",
+    "air_conditioned": "Klimatizace"
+  },
+  "editor": {
+    "entity": "Senzor odjezdové tabule",
+    "title": "Nadpis (volitelný)",
+    "show_wheelchair": "Zobrazit bezbariérovost",
+    "show_air_conditioned": "Zobrazit klimatizaci",
+    "time_display": "Zobrazení času",
+    "time_display_time": "Čas odjezdu",
+    "time_display_countdown": "Za jak dlouho",
+    "time_display_both": "Obojí",
+    "refresh_lead_min": "Aktualizovat minut před příjezdem dalšího spoje (0 = nikdy)",
+    "max_departures": "Maximální počet zobrazených odjezdů"
+  }
+}
