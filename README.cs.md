@@ -77,7 +77,7 @@ V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na
 
 ```yaml
 type: custom:pid-departure-boards-ui-departures-card
-entity: sensor.litochlebske_namesti_opatov
+entity: sensor.smichovske_nadrazi_b
 time_display: both
 show_wheelchair: true
 show_air_conditioned: false

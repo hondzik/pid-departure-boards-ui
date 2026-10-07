@@ -77,7 +77,7 @@ The card shows the stop name and platform in the header and one row per upcoming
 
 ```yaml
 type: custom:pid-departure-boards-ui-departures-card
-entity: sensor.litochlebske_namesti_opatov
+entity: sensor.smichovske_nadrazi_b
 time_display: both
 show_wheelchair: true
 show_air_conditioned: false
