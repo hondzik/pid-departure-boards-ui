@@ -9,7 +9,10 @@
     "at_stop": "на зупинці",
     "canceled": "скасовано",
     "wheelchair": "Доступно для візків",
-    "air_conditioned": "Кондиціонер"
+    "air_conditioned": "Кондиціонер",
+    "show_map": "Показати мапу",
+    "close": "Закрити",
+    "open_in_osm": "Відкрити в OpenStreetMap"
   },
   "editor": {
     "entity": "Сенсор табло відправлень",

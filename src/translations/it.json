@@ -9,7 +9,10 @@
     "at_stop": "alla fermata",
     "canceled": "soppresso",
     "wheelchair": "Accessibile in sedia a rotelle",
-    "air_conditioned": "Aria condizionata"
+    "air_conditioned": "Aria condizionata",
+    "show_map": "Mostra mappa",
+    "close": "Chiudi",
+    "open_in_osm": "Apri in OpenStreetMap"
   },
   "editor": {
     "entity": "Sensore del tabellone partenze",

@@ -9,7 +9,10 @@
     "at_stop": "a megállóban",
     "canceled": "törölve",
     "wheelchair": "Kerekesszékkel megközelíthető",
-    "air_conditioned": "Légkondicionált"
+    "air_conditioned": "Légkondicionált",
+    "show_map": "Térkép megjelenítése",
+    "close": "Bezárás",
+    "open_in_osm": "Megnyitás az OpenStreetMapon"
   },
   "editor": {
     "entity": "Indulási tábla érzékelő",

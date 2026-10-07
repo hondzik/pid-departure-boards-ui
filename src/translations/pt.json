@@ -9,7 +9,10 @@
     "at_stop": "na paragem",
     "canceled": "cancelado",
     "wheelchair": "Acessível a cadeira de rodas",
-    "air_conditioned": "Ar condicionado"
+    "air_conditioned": "Ar condicionado",
+    "show_map": "Mostrar mapa",
+    "close": "Fechar",
+    "open_in_osm": "Abrir no OpenStreetMap"
   },
   "editor": {
     "entity": "Sensor do painel de partidas",

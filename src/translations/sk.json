@@ -9,7 +9,10 @@
     "at_stop": "na zastávke",
     "canceled": "zrušený",
     "wheelchair": "Bezbariérový spoj",
-    "air_conditioned": "Klimatizácia"
+    "air_conditioned": "Klimatizácia",
+    "show_map": "Zobraziť mapu",
+    "close": "Zavrieť",
+    "open_in_osm": "Otvoriť v OpenStreetMap"
   },
   "editor": {
     "entity": "Senzor odchodovej tabule",

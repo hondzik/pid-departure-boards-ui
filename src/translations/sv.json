@@ -9,7 +9,10 @@
     "at_stop": "vid hållplatsen",
     "canceled": "inställd",
     "wheelchair": "Rullstolsanpassad",
-    "air_conditioned": "Luftkonditionering"
+    "air_conditioned": "Luftkonditionering",
+    "show_map": "Visa karta",
+    "close": "Stäng",
+    "open_in_osm": "Öppna i OpenStreetMap"
   },
   "editor": {
     "entity": "Sensor för avgångstavla",

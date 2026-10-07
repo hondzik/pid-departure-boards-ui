@@ -9,7 +9,10 @@
     "at_stop": "en la parada",
     "canceled": "cancelado",
     "wheelchair": "Accesible en silla de ruedas",
-    "air_conditioned": "Aire acondicionado"
+    "air_conditioned": "Aire acondicionado",
+    "show_map": "Mostrar mapa",
+    "close": "Cerrar",
+    "open_in_osm": "Abrir en OpenStreetMap"
   },
   "editor": {
     "entity": "Sensor del panel de salidas",

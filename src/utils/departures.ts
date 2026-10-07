@@ -28,13 +28,24 @@ export function rowLimit(maxDepartures: number | undefined, available: number): 
 }
 
 // Layout units: two departure rows take the height of one standard dashboard row (row height + gap), so the card
-// stays aligned with neighbouring standard cards in a sections view (header = 1 row, then 1 unit per 2 departures).
+// stays aligned with neighbouring standard cards in a sections view. The header is one grid row; the body has one
+// unit per grid row and always leaves the last half unit empty as the bottom margin, so n units show 2n - 1 departures.
 export function layoutUnits(limit: number): number {
-  return Math.max(1, Math.ceil(limit / 2));
+  return Math.max(1, Math.ceil((limit + 1) / 2));
 }
 
-export function gridRows(limit: number, hasInfotexts: boolean): number {
-  return 1 + layoutUnits(limit) + (hasInfotexts ? 1 : 0);
+export function gridRows(limit: number): number {
+  return 1 + layoutUnits(limit);
+}
+
+// How many departures fit into a card that is `rows` grid rows high (2 rows -> 1, 3 -> 3, 4 -> 5, ...).
+export function capacityForRows(rows: number): number {
+  return Math.max(1, 2 * (rows - 1) - 1);
+}
+
+// Grid rows the card actually occupies: the height set by the user on the dashboard if any, otherwise what fits the limit.
+export function effectiveRows(configuredRows: number | string | undefined, limit: number): number {
+  return typeof configuredRows === 'number' && configuredRows >= 2 ? Math.floor(configuredRows) : gridRows(limit);
 }
 
 // Departures the board should show: already-departed ones are dropped, the rest sorted by time.

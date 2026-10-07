@@ -26,10 +26,47 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
     padding: 0 16px;
   }
 
+  .heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .title-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .stop-name {
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1.1em;
+    cursor: pointer;
     color: var(--primary-text-color);
+  }
+
+  .infotext {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 2px;
+    font-size: 0.75em;
+    line-height: 1.25;
+    color: var(--secondary-text-color);
+    animation: fade-in 0.4s ease-in;
+  }
+
+  .infotext .counter {
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
   }
 
   .platform {
@@ -43,8 +80,10 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   }
 
   .refresh {
-    --mdc-icon-button-size: 36px;
-    margin-right: -10px;
+    flex: none;
+    --mdc-icon-button-size: 32px;
+    --mdc-icon-size: 20px;
+    margin-right: -8px;
     color: var(--secondary-text-color);
   }
 
@@ -158,17 +197,20 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
     opacity: 0.55;
   }
 
-  .empty,
-  .infotexts {
+  .empty {
     color: var(--secondary-text-color);
   }
 
-  .infotexts {
-    box-sizing: border-box;
-    height: var(--pid-unit);
-    padding: 8px 16px;
-    overflow: auto;
-    border-top: 1px solid var(--divider-color);
-    font-size: 0.9em;
+  .map {
+    display: block;
+    width: min(80vw, 640px);
+    height: 60vh;
+    border: 0;
+  }
+
+  .map-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--primary-color);
   }
 `;

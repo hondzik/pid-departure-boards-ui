@@ -9,7 +9,10 @@
     "at_stop": "an der Haltestelle",
     "canceled": "entfällt",
     "wheelchair": "Barrierefrei",
-    "air_conditioned": "Klimatisiert"
+    "air_conditioned": "Klimatisiert",
+    "show_map": "Karte anzeigen",
+    "close": "Schließen",
+    "open_in_osm": "In OpenStreetMap öffnen"
   },
   "editor": {
     "entity": "Abfahrtstafel-Sensor",

@@ -9,7 +9,10 @@
     "at_stop": "在站内",
     "canceled": "已取消",
     "wheelchair": "无障碍（轮椅）",
-    "air_conditioned": "空调"
+    "air_conditioned": "空调",
+    "show_map": "显示地图",
+    "close": "关闭",
+    "open_in_osm": "在 OpenStreetMap 中打开"
   },
   "editor": {
     "entity": "发车信息板传感器",

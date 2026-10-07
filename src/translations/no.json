@@ -9,7 +9,10 @@
     "at_stop": "ved holdeplassen",
     "canceled": "innstilt",
     "wheelchair": "Rullestoltilgjengelig",
-    "air_conditioned": "Klimaanlegg"
+    "air_conditioned": "Klimaanlegg",
+    "show_map": "Vis kart",
+    "close": "Lukk",
+    "open_in_osm": "Åpne i OpenStreetMap"
   },
   "editor": {
     "entity": "Sensor for avgangstavle",

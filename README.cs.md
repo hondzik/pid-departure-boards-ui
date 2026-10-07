@@ -57,7 +57,9 @@ V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na
 - Řádek obsahuje ikonu vozidla, číslo linky, cíl, čas do odjezdu a/nebo čas odjezdu, zpoždění (`+5`, jen když má vůz zpoždění) a ikony bezbariérovosti a klimatizace.
 - Zobrazený čas je vždy podle jízdního řádu a zpoždění je uvedeno vedle něj; odpočet, řazení a obnova používají reálný očekávaný čas včetně zpoždění. Odjezdy, které už odjely, samy zmizí.
 - Zrušené spoje jsou přeškrtnuté; řádek bliká, dokud vůz stojí v zastávce (po najetí myší se zobrazí „na zastávce"; při zapnutém omezení animací se řádek místo toho zvýrazní).
-- Oznámení (např. výluky) z integrace jsou vypsána pod odjezdy.
+- Oznámení (např. výluky) z integrace jsou zobrazena pod názvem zastávky; je-li jich víc, střídají se po 5 sekundách.
+- Kliknutím na název zastávky se v okně zobrazí mapa zastávky.
+- Výška karty sleduje mřížku dashboardu: při změně velikosti v editoru zobrazí tolik odjezdů, kolik se vejde (2 řádky = 1 odjezd, 3 řádky = 3, 4 řádky = 5, ...).
 - Stav senzoru se mění jen při aktualizaci integrace, takže odpočet „za X min" počítá karta sama.
 - **Aktualizace:** tlačítko vpravo nahoře obnoví senzor okamžitě. Navíc karta obnovuje senzor každou minutu od chvíle, kdy je nejbližší odjezd blíž než nastavený počet minut. Pro všechny karty na stránce běží jeden sdílený časovač, senzory splatné ve stejnou chvíli se obnoví jedním voláním a více karet se stejným senzorem ho obnoví jen jednou — víc karet tak nevyčerpá limit požadavků API Golemio.
 
@@ -91,7 +93,7 @@ Kartu přidejte z nabídky karet (nabízí se pro senzory integrace `pid_departu
 
 ## Řešení problémů
 
-- **Karta se u mého senzoru nenabízí** — navrhují se jen senzory vytvořené integrací `pid_departure_boards`; jinak kartu vyberte ručně jako „Custom: PID Departure Board".
+- **Karta se u mého senzoru nenabízí** — po výběru entity se karta nabízí jen u senzorů integrace `pid_departure_boards`; jinak ji vyberte ručně ze „Všech karet" („Custom: PID Departure Board"). Po aktualizaci karty obnovte cache prohlížeče.
 - **Tabule zobrazuje „Odjezdy nejsou dostupné"** — integrace se nepodařilo aktualizovat z API; zkontrolujte logy integrace.
 - **Čas se mezi aktualizacemi neodpočítává** — ověřte, že karta v prohlížeči není uspaná; odpočet se počítá v prohlížeči každých pár sekund.
 - **Nezobrazuje se zpoždění** — zobrazí se jen tehdy, když ho vůz hlásí (`+m` při kladném zpoždění).

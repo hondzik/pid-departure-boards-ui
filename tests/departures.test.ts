@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import fixture from './fixtures/sensor.litochlebske_namesti_opatov.json';
-import { departureTime, gridRows, layoutUnits, rowLimit, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
+import { capacityForRows, departureTime, effectiveRows, gridRows, layoutUnits, rowLimit, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
 
 const departures = fixture.attributes.departures as PidDeparture[];
 const at = (iso: string) => new Date(iso);
@@ -111,14 +111,19 @@ describe('grid layout', () => {
     expect(rowLimit(4, 0)).toBe(4);
   });
 
-  it('takes one unit per two departure rows, at least one', () => {
-    expect([0, 1, 2, 3, 4, 5, 6].map(layoutUnits)).toEqual([1, 1, 1, 2, 2, 3, 3]);
+  it('keeps the last half unit free, so n units show 2n - 1 departures', () => {
+    expect([0, 1, 2, 3, 4, 5, 6].map(layoutUnits)).toEqual([1, 1, 2, 2, 3, 3, 4]);
+    expect([1, 3, 5].map((limit) => gridRows(limit))).toEqual([2, 3, 4]);
   });
 
-  it('maps 2 rows to 2 standard cards, 4 rows to 3, and reserves a row for notices', () => {
-    expect(gridRows(2, false)).toBe(2);
-    expect(gridRows(4, false)).toBe(3);
-    expect(gridRows(5, false)).toBe(4);
-    expect(gridRows(4, true)).toBe(4);
+  it('maps grid rows to departures: 2 rows -> 1, 3 -> 3, 4 -> 5', () => {
+    expect([1, 2, 3, 4, 5].map(capacityForRows)).toEqual([1, 1, 3, 5, 7]);
+  });
+
+  it('prefers the height set on the dashboard over the default', () => {
+    expect(effectiveRows(3, 5)).toBe(3);
+    expect(effectiveRows(undefined, 5)).toBe(4);
+    expect(effectiveRows('auto', 5)).toBe(4);
+    expect(effectiveRows(1, 5)).toBe(4);
   });
 });

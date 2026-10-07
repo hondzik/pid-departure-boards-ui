@@ -57,7 +57,9 @@ The card shows the stop name and platform in the header and one row per upcoming
 - Each row has a vehicle icon, the line number, the destination, the time until departure and/or the departure clock time, the delay (`+5` only when the vehicle is late) and the wheelchair / air-conditioning icons.
 - The clock time is always the timetable (scheduled) time and the delay is shown next to it; the countdown, ordering and refresh use the real expected time including the delay. Departures that are already gone disappear on their own.
 - Canceled departures are struck through; a row blinks while the vehicle is standing at the stop (hover shows "at the stop"; with reduced motion enabled the row is highlighted instead).
-- Notices (e.g. closures) from the integration are listed below the departures.
+- Notices (e.g. closures) from the integration are shown under the stop name; when there are several they rotate every 5 seconds.
+- Click the stop name to open a map of the stop in a popup.
+- The card's height follows the dashboard grid: resize it in the dashboard editor and it shows as many departures as fit (2 rows = 1 departure, 3 rows = 3, 4 rows = 5, ...).
 - The sensor itself only changes when the integration updates, so the "in X min" countdown is computed by the card.
 - **Refresh:** the button in the top right corner refreshes the sensor immediately. In addition, once the next departure is closer than the configured number of minutes the card refreshes the sensor every minute. One shared timer serves all cards on the page, sensors due at the same time are refreshed in a single call and several cards showing the same sensor refresh it only once — so many cards don't exhaust the Golemio API rate limit.
 
@@ -91,7 +93,7 @@ Add the card from the card picker (it is offered for sensors of the `pid_departu
 
 ## Troubleshooting
 
-- **The card isn't offered for my sensor** — only sensors created by the `pid_departure_boards` integration are suggested; pick the card manually via "Custom: PID Departure Board" otherwise.
+- **The card isn't offered for my sensor** — only sensors created by the `pid_departure_boards` integration get the card suggested after selecting an entity; otherwise pick it manually from "All cards" ("Custom: PID Departure Board"). Reload the browser cache after updating the card.
 - **The board shows "Departures are unavailable"** — the integration failed to update from the API; check the integration's logs.
 - **The times don't count down between updates** — make sure the browser tab isn't suspended; the countdown is computed in the browser every few seconds.
 - **No delay shown** — the delay is shown only when the vehicle reports one (`+m` for a positive delay).

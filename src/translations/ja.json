@@ -9,7 +9,10 @@
     "at_stop": "停車中",
     "canceled": "運休",
     "wheelchair": "車いす対応",
-    "air_conditioned": "冷房あり"
+    "air_conditioned": "冷房あり",
+    "show_map": "地図を表示",
+    "close": "閉じる",
+    "open_in_osm": "OpenStreetMap で開く"
   },
   "editor": {
     "entity": "発車案内センサー",

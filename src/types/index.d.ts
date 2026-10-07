@@ -13,6 +13,7 @@ declare global {
     description: string;
     preview?: boolean;
     documentationURL?: string;
+    getEntitySuggestion?: (hass: HomeAssistant, entityId: string) => { label?: string; config: LovelaceCardConfig } | null;
   }
 
   // Minimal shape of the entity/device registry display data the frontend
@@ -84,6 +85,9 @@ declare global {
     platform: string | null;
     departures: PidDeparture[];
     infotexts: PidInfotext[];
+    // stop position, used for the map popup (optional)
+    latitude?: number;
+    longitude?: number;
     friendly_name?: string;
   }
 
@@ -100,5 +104,7 @@ declare global {
     // refresh the sensor this many minutes before the next departure (then every minute); 0 = never
     refresh_lead_min?: number;
     max_departures?: number;
+    // set by the dashboard when the card is resized (sections view)
+    grid_options?: { rows?: number | 'auto'; columns?: number | 'full' };
   };
 }

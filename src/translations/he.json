@@ -9,7 +9,10 @@
     "at_stop": "בתחנה",
     "canceled": "בוטל",
     "wheelchair": "נגיש לכיסא גלגלים",
-    "air_conditioned": "ממוזג"
+    "air_conditioned": "ממוזג",
+    "show_map": "הצג מפה",
+    "close": "סגור",
+    "open_in_osm": "פתח ב-OpenStreetMap"
   },
   "editor": {
     "entity": "חיישן לוח היציאות",

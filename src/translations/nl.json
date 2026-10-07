@@ -9,7 +9,10 @@
     "at_stop": "bij de halte",
     "canceled": "vervallen",
     "wheelchair": "Rolstoeltoegankelijk",
-    "air_conditioned": "Airconditioning"
+    "air_conditioned": "Airconditioning",
+    "show_map": "Kaart tonen",
+    "close": "Sluiten",
+    "open_in_osm": "Openen in OpenStreetMap"
   },
   "editor": {
     "entity": "Sensor van het vertrekbord",

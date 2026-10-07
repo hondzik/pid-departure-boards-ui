@@ -9,7 +9,10 @@
     "at_stop": "at the stop",
     "canceled": "canceled",
     "wheelchair": "Wheelchair accessible",
-    "air_conditioned": "Air conditioned"
+    "air_conditioned": "Air conditioned",
+    "show_map": "Show map",
+    "close": "Close",
+    "open_in_osm": "Open in OpenStreetMap"
   },
   "editor": {
     "entity": "Departure board sensor",

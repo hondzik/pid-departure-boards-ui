@@ -9,7 +9,10 @@
     "at_stop": "na przystanku",
     "canceled": "odwołany",
     "wheelchair": "Dostępny dla wózków",
-    "air_conditioned": "Klimatyzacja"
+    "air_conditioned": "Klimatyzacja",
+    "show_map": "Pokaż mapę",
+    "close": "Zamknij",
+    "open_in_osm": "Otwórz w OpenStreetMap"
   },
   "editor": {
     "entity": "Czujnik tablicy odjazdów",
