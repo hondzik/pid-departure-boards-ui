@@ -26,7 +26,7 @@
 
 Vlastní Lovelace **karta** pro Home Assistant, která zobrazuje odjezdovou tabuli zastávky Pražské integrované dopravy (PID) — linku, cíl, čas do odjezdu, zpoždění a informace o bezbariérovosti. Data čte z integrace [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) a sama nikdy nevolá API Golemio.
 
-![Přehled odjezdové tabule](docs/images/placeholder.svg)
+![Přehled odjezdové tabule](docs/images/card.png)
 
 ## Co balíček obsahuje
 
@@ -46,7 +46,7 @@ Nainstalujte přes [HACS](https://hacs.xyz/) pomocí tlačítka níže, nebo př
 
 ## Karta: Odjezdová tabule
 
-![Karta odjezdové tabule](docs/images/placeholder.svg)
+![Karta odjezdové tabule](docs/images/card.png)
 
 `type: custom:pid-departure-boards-ui-departures-card`
 
@@ -89,7 +89,7 @@ max_departures: 5
 
 Kartu přidejte z nabídky karet (nabízí se pro senzory integrace `pid_departure_boards`) nebo upravte existující. V editoru jsou dostupné všechny výše uvedené volby:
 
-![Editor odjezdové tabule](docs/images/placeholder.svg)
+![Editor odjezdové tabule](docs/images/editor.cs.png)
 
 ## Řešení problémů
 

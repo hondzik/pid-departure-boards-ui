@@ -26,7 +26,7 @@
 
 This is a custom Home Assistant Lovelace **card** that shows a departure board for a stop of the Prague Integrated Transport (PID) — line, destination, time until departure, delay and accessibility info. It reads the data from the [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) integration and never talks to the Golemio API itself.
 
-![Departure board overview](docs/images/placeholder.svg)
+![Departure board overview](docs/images/card.png)
 
 ## What's in this bundle
 
@@ -46,7 +46,7 @@ Install through [HACS](https://hacs.xyz/) using the badge below, or add this rep
 
 ## Card: Departure board
 
-![Departure board card](docs/images/placeholder.svg)
+![Departure board card](docs/images/card.png)
 
 `type: custom:pid-departure-boards-ui-departures-card`
 
@@ -89,7 +89,7 @@ max_departures: 5
 
 Add the card from the card picker (it is offered for sensors of the `pid_departure_boards` integration) or edit an existing card. Every option above is available in the editor:
 
-![Departure board editor](docs/images/placeholder.svg)
+![Departure board editor](docs/images/editor.png)
 
 ## Troubleshooting
 
