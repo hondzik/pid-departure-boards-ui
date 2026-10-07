@@ -2,12 +2,14 @@ import { css } from 'lit';
 import type { CSSResultGroup } from 'lit';
 
 // Sizing follows the sections-view grid so the card lines up with standard cards next to it:
-// header = one grid row, each --pid-units block = one grid row + gap = two departure rows.
+// header = one grid row, the body = one grid row + gap per --pid-units; --pid-count departures share it evenly,
+// leaving --pid-bottom as the bottom margin.
 // --row-height / --row-gap are provided by the sections view (56 px / 8 px by default).
 export const PidDeparturesCardStyles: CSSResultGroup = css`
   :host {
     --pid-row: var(--row-height, 56px);
     --pid-unit: calc(var(--pid-row) + var(--row-gap, 8px));
+    --pid-bottom: 16px;
   }
 
   ha-card {
@@ -47,25 +49,44 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   }
 
   .infotext {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
     overflow: hidden;
     margin-top: 2px;
     font-size: 0.75em;
     line-height: 1.25;
+    white-space: nowrap;
     color: var(--secondary-text-color);
-    animation: fade-in 0.4s ease-in;
   }
 
-  .infotext .counter {
-    color: var(--primary-color);
-    font-weight: bold;
+  /* two identical items scrolled by exactly one item width = seamless endless loop */
+  .marquee {
+    display: inline-flex;
+    animation: marquee var(--pid-marquee, 10s) linear infinite;
   }
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
+  .marquee-item {
+    box-sizing: border-box;
+    flex: none;
+    min-width: 100%;
+    padding-right: 3em;
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      animation: none;
+    }
+
+    .marquee-item[aria-hidden='true'] {
+      display: none;
+    }
+
+    .infotext {
+      text-overflow: ellipsis;
     }
   }
 
@@ -110,7 +131,8 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   }
 
   tr {
-    height: calc(var(--pid-unit) / 2);
+    /* the rows share the body height minus the bottom margin */
+    height: calc((var(--pid-units, 1) * var(--pid-unit) - var(--pid-bottom)) / var(--pid-count, 1));
   }
 
   td {

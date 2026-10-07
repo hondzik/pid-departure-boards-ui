@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import fixture from './fixtures/sensor.litochlebske_namesti_opatov.json';
-import { capacityForRows, departureTime, effectiveRows, gridRows, layoutUnits, rowLimit, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
+import { capacityForRows, departureTime, effectiveRows, gridRows, joinInfotexts, layoutUnits, marqueeSeconds, rowLimit, scheduledTime, formatTime, minutesUntil, nextDepartureTime, routeIcon, shouldAutoRefresh, visibleDepartures } from '../src/utils/departures';
 
 const departures = fixture.attributes.departures as PidDeparture[];
 const at = (iso: string) => new Date(iso);
@@ -99,6 +99,21 @@ describe('routeIcon', () => {
     expect(routeIcon(11)).toBe('mdi:bus-electric');
     expect(routeIcon(null)).toBe('mdi:bus');
     expect(routeIcon(99)).toBe('mdi:bus');
+  });
+});
+
+describe('infotext marquee', () => {
+  const info = (text: string): PidInfotext => ({ text, valid_from: null, valid_to: null, display_type: null });
+
+  it('joins all notices into one line separated by a space', () => {
+    expect(joinInfotexts([info('A closed.'), info(' B diverted. ')])).toBe('A closed. B diverted.');
+    expect(joinInfotexts([info('A'), info('')])).toBe('A');
+    expect(joinInfotexts([])).toBe('');
+  });
+
+  it('scrolls at a constant speed, never faster than for a full-width line', () => {
+    expect(marqueeSeconds('short')).toBe(8);
+    expect(marqueeSeconds('x'.repeat(100))).toBe(20);
   });
 });
 

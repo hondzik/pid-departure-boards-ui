@@ -1,6 +1,5 @@
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { keyed } from 'lit/directives/keyed.js';
 import setupCustomlocalize from '../../localize';
 import {
   capacityForRows,
@@ -8,6 +7,8 @@ import {
   effectiveRows,
   formatTime,
   gridRows,
+  joinInfotexts,
+  marqueeSeconds,
   minutesUntil,
   nextDepartureTime,
   rowLimit,
@@ -24,7 +25,6 @@ import './pid-departure-boards-ui-departures-editor';
 
 const CARD_TAG = 'pid-departure-boards-ui-departures-card';
 const DEFAULT_REFRESH_LEAD_MIN = 5;
-const INFOTEXT_ROTATE_MS = 5 * 1000;
 
 function isPidEntity(hass: HomeAssistant, entityId: string): boolean {
   return (hass as unknown as HassWithRegistry).entities?.[entityId]?.platform === INTEGRATION;
@@ -45,14 +45,9 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
   private _refreshing = false;
 
   @state()
-  private _infotextIndex = 0;
-
-  @state()
   private _mapOpen = false;
 
   private _unsubscribe?: () => void;
-
-  private _rotateTimer?: number;
 
   public static styles: CSSResultGroup = PidDeparturesCardStyles;
 
@@ -114,17 +109,12 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
         this._refreshing = refreshing;
       },
     });
-    this._rotateTimer = window.setInterval(() => {
-      if ((this._attrs?.infotexts?.length ?? 0) > 1) this._infotextIndex += 1;
-    }, INFOTEXT_ROTATE_MS);
   }
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
     this._unsubscribe?.();
     this._unsubscribe = undefined;
-    window.clearInterval(this._rotateTimer);
-    this._rotateTimer = undefined;
   }
 
   private get _attrs(): PidSensorAttributes | undefined {
@@ -165,12 +155,10 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
     const limit = Math.min(capacityForRows(rows), this._config.max_departures && this._config.max_departures > 0 ? this._config.max_departures : Infinity);
     const departures = visibleDepartures(attrs.departures ?? [], this._now, limit);
     const title = this._config.title || attrs.stop_name || attrs.friendly_name || '';
-    const infotexts = attrs.infotexts ?? [];
-    const infotextIndex = infotexts.length > 0 ? this._infotextIndex % infotexts.length : 0;
-    const infotext = infotexts[infotextIndex];
+    const infotext = joinInfotexts(attrs.infotexts ?? []);
 
     return html`
-      <ha-card style="--pid-units: ${rows - 1}">
+      <ha-card style="--pid-units: ${rows - 1}; --pid-count: ${capacityForRows(rows)}">
         <div class="header">
           <div class="heading">
             <div class="title-line">
@@ -179,12 +167,9 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
             </div>
             ${
               infotext
-                ? keyed(
-                    infotextIndex,
-                    html`<div class="infotext" title=${infotext.text}>
-                      ${infotexts.length > 1 ? html`<span class="counter">${infotextIndex + 1}/${infotexts.length}</span> ` : nothing}${infotext.text}
-                    </div>`,
-                  )
+                ? html`<div class="infotext" title=${infotext} style="--pid-marquee: ${marqueeSeconds(infotext)}s">
+                    <span class="marquee"><span class="marquee-item">${infotext}</span><span class="marquee-item" aria-hidden="true">${infotext}</span></span>
+                  </div>`
                 : nothing
             }
           </div>

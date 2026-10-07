@@ -57,7 +57,7 @@ V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na
 - Řádek obsahuje ikonu vozidla, číslo linky, cíl, čas do odjezdu a/nebo čas odjezdu, zpoždění (`+5`, jen když má vůz zpoždění) a ikony bezbariérovosti a klimatizace.
 - Zobrazený čas je vždy podle jízdního řádu a zpoždění je uvedeno vedle něj; odpočet, řazení a obnova používají reálný očekávaný čas včetně zpoždění. Odjezdy, které už odjely, samy zmizí.
 - Zrušené spoje jsou přeškrtnuté; řádek bliká, dokud vůz stojí v zastávce (po najetí myší se zobrazí „na zastávce"; při zapnutém omezení animací se řádek místo toho zvýrazní).
-- Oznámení (např. výluky) z integrace jsou zobrazena pod názvem zastávky; je-li jich víc, střídají se po 5 sekundách.
+- Oznámení (např. výluky) z integrace jsou zobrazena pod názvem zastávky v jednom řádku, který se nepřetržitě posouvá (více oznámení se spojí mezerou).
 - Kliknutím na název zastávky se v okně zobrazí mapa zastávky.
 - Výška karty sleduje mřížku dashboardu: při změně velikosti v editoru zobrazí tolik odjezdů, kolik se vejde (2 řádky = 1 odjezd, 3 řádky = 3, 4 řádky = 5, ...).
 - Stav senzoru se mění jen při aktualizaci integrace, takže odpočet „za X min" počítá karta sama.

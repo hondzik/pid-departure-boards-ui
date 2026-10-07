@@ -57,7 +57,7 @@ The card shows the stop name and platform in the header and one row per upcoming
 - Each row has a vehicle icon, the line number, the destination, the time until departure and/or the departure clock time, the delay (`+5` only when the vehicle is late) and the wheelchair / air-conditioning icons.
 - The clock time is always the timetable (scheduled) time and the delay is shown next to it; the countdown, ordering and refresh use the real expected time including the delay. Departures that are already gone disappear on their own.
 - Canceled departures are struck through; a row blinks while the vehicle is standing at the stop (hover shows "at the stop"; with reduced motion enabled the row is highlighted instead).
-- Notices (e.g. closures) from the integration are shown under the stop name; when there are several they rotate every 5 seconds.
+- Notices (e.g. closures) from the integration are shown under the stop name as a single line of text that scrolls endlessly (several notices are joined with a space).
 - Click the stop name to open a map of the stop in a popup.
 - The card's height follows the dashboard grid: resize it in the dashboard editor and it shows as many departures as fit (2 rows = 1 departure, 3 rows = 3, 4 rows = 5, ...).
 - The sensor itself only changes when the integration updates, so the "in X min" countdown is computed by the card.

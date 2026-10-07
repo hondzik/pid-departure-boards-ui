@@ -48,6 +48,19 @@ export function effectiveRows(configuredRows: number | string | undefined, limit
   return typeof configuredRows === 'number' && configuredRows >= 2 ? Math.floor(configuredRows) : gridRows(limit);
 }
 
+// All active notices as one line of text (scrolled as a marquee in the header).
+export function joinInfotexts(infotexts: PidInfotext[]): string {
+  return infotexts
+    .map((info) => info.text?.trim())
+    .filter(Boolean)
+    .join(' ');
+}
+
+// Duration of one marquee loop: constant speed, at least as long as for a full-width line.
+export function marqueeSeconds(text: string): number {
+  return Math.max(text.length, 40) * 0.2;
+}
+
 // Departures the board should show: already-departed ones are dropped, the rest sorted by time.
 export function visibleDepartures(departures: PidDeparture[], now: Date, limit?: number): PidDeparture[] {
   const result = departures
