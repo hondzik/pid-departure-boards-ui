@@ -5,7 +5,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import setupCustomlocalize from '../../localize';
 import { isDarkMode } from '../../utils/map';
 import { fetchTileToken, proxyTileUrl, TILE_MAX_NATIVE_ZOOM, TOKEN_REFRESH_MS, TOKEN_RETRY_THROTTLE_MS } from '../../utils/map-tiles';
-import { fetchRouteShapes, fetchVehicles, routeColor, routeTypes, toLatLngs, VEHICLE_POLL_MS, vehicleKey, vehicleTooltip } from '../../utils/vehicles';
+import { fetchRouteShapes, fetchVehicles, routeColor, routeTypes, toLatLngs, VEHICLE_POLL_MS, vehicleKey, vehicleTooltip, withoutPassedVehicles } from '../../utils/vehicles';
 import type { PidRouteShape, PidVehicle } from '../../utils/vehicles';
 import type { HomeAssistant } from 'custom-card-helpers';
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit';
@@ -54,6 +54,10 @@ export class PidMap extends LitElement {
   private _resizeObserver?: ResizeObserver;
 
   private _fitted = false;
+
+  private _shapes: PidRouteShape[] = [];
+
+  private _passed = new Set<string>();
 
   private _tiles?: L.TileLayer;
 
@@ -247,6 +251,8 @@ export class PidMap extends LitElement {
   protected updated(changed: PropertyValues): void {
     if (changed.has('entity') && changed.get('entity') !== undefined && this._map) {
       this._fitted = false;
+      this._shapes = [];
+      this._passed = new Set();
       void this._loadShapes();
       void this._pollVehicles();
     }
@@ -281,6 +287,7 @@ export class PidMap extends LitElement {
     if (!this.hass || !this.entity || !this._map) return;
     try {
       const shapes = await fetchRouteShapes(this.hass, this.entity);
+      this._shapes = shapes;
       this._drawShapes(shapes);
     } catch (err) {
       console.error('pid-departure-boards-ui: loading route shapes failed', err);
@@ -316,7 +323,11 @@ export class PidMap extends LitElement {
     }
   }
 
-  private _drawVehicles(vehicles: PidVehicle[]): void {
+  private _drawVehicles(allVehicles: PidVehicle[]): void {
+    // vehicles that already served the stop and head on to the end of the line are not shown
+    const stop = Number.isFinite(this.latitude) && Number.isFinite(this.longitude) ? { latitude: this.latitude as number, longitude: this.longitude as number } : undefined;
+    const { visible: vehicles, hidden } = withoutPassedVehicles(allVehicles, this._shapes, stop, this._passed);
+    this._passed = hidden;
     const types = this._types;
     const seen = new Set<string>();
     for (const vehicle of vehicles) {

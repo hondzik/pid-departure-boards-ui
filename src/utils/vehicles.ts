@@ -1,3 +1,5 @@
+import { buildRoute, passesWithin, projectOnRoute } from './route-position';
+import type { RouteLine } from './route-position';
 import type { HomeAssistant } from 'custom-card-helpers';
 
 export const VEHICLE_POLL_MS = 12 * 1000;
@@ -91,4 +93,72 @@ export function vehicleKey(vehicle: PidVehicle): string {
 export function vehicleTooltip(vehicle: PidVehicle): string {
   const delay = vehicle.delay_min === null ? '' : vehicle.delay_min > 0 ? ` +${vehicle.delay_min}` : vehicle.delay_min < 0 ? ` ${vehicle.delay_min}` : '';
   return `${vehicle.route}${vehicle.headsign ? ` → ${vehicle.headsign}` : ''}${delay}`;
+}
+
+// -- vehicles that already passed the stop --------------------------------------------------------------------------------
+// The service returns every vehicle of the watched lines going the stop's way, including those that already served the stop and head on to
+// the end of the line. A vehicle counts as passed when, measured along the route of its line, it is further than PASSED_MARGIN_M behind the stop.
+
+// A vehicle standing at the platform is still shown; it disappears once it has moved on by more than this.
+export const PASSED_MARGIN_M = 40;
+// Further from the line than this, the vehicle is probably on another variant of the route (depot run, short turn): can't tell, keep it.
+const MAX_VEHICLE_OFF_ROUTE_M = 150;
+// The stop must lie on the route; otherwise the position along the route says nothing about it.
+const MAX_STOP_OFF_ROUTE_M = 100;
+// A loop runs past the stop twice, so "behind the stop" is ambiguous there: such routes are not filtered.
+const LOOP_RADIUS_M = 30;
+const LOOP_GAP_M = 200;
+
+export interface StopPosition {
+  latitude: number;
+  longitude: number;
+}
+
+interface RouteWithStop {
+  line: RouteLine;
+  // distance of the stop from the start of the route; undefined when the filter can't be applied to this route
+  stopAlong?: number;
+}
+
+const shapeKey = (route: string, headsign: string | null): string => `${route}\u0000${headsign ?? ''}`;
+
+function routeWithStop(shape: PidRouteShape, stop: StopPosition): RouteWithStop | undefined {
+  if (!shape.coordinates || shape.coordinates.length < 2) return undefined;
+  const line = buildRoute(shape.coordinates);
+  const position = projectOnRoute(line, stop.longitude, stop.latitude);
+  const usable = position !== undefined && position.distance <= MAX_STOP_OFF_ROUTE_M && passesWithin(line, stop.longitude, stop.latitude, LOOP_RADIUS_M, LOOP_GAP_M) <= 1;
+  return { line, stopAlong: usable ? position.along : undefined };
+}
+
+// `hidden` holds the keys of vehicles hidden earlier: once passed, a vehicle stays hidden for as long as it is in the responses, so GPS noise
+// around the margin doesn't make it blink. Returns the vehicles to show and the new set of hidden keys (those still in the response).
+export function withoutPassedVehicles(
+  vehicles: PidVehicle[],
+  shapes: PidRouteShape[],
+  stop: StopPosition | undefined,
+  hidden: ReadonlySet<string>,
+): { visible: PidVehicle[]; hidden: Set<string> } {
+  const routes = new Map<string, RouteWithStop>();
+  if (stop) {
+    for (const shape of shapes) {
+      const entry = routeWithStop(shape, stop);
+      if (entry) routes.set(shapeKey(shape.route, shape.headsign), entry);
+    }
+  }
+  const visible: PidVehicle[] = [];
+  const nowHidden = new Set<string>();
+  for (const vehicle of vehicles) {
+    const key = vehicleKey(vehicle);
+    let passed = hidden.has(key);
+    if (!passed && stop && vehicle.headsign !== null) {
+      const entry = routes.get(shapeKey(vehicle.route, vehicle.headsign));
+      if (entry?.stopAlong !== undefined) {
+        const position = projectOnRoute(entry.line, vehicle.longitude, vehicle.latitude);
+        passed = position !== undefined && position.distance <= MAX_VEHICLE_OFF_ROUTE_M && position.along - entry.stopAlong > PASSED_MARGIN_M;
+      }
+    }
+    if (passed) nowHidden.add(key);
+    else visible.push(vehicle);
+  }
+  return { visible, hidden: nowHidden };
 }
