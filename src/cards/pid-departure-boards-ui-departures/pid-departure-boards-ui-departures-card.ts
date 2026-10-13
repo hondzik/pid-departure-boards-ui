@@ -17,7 +17,7 @@ import {
   scheduledTime,
   visibleDepartures,
 } from '../../utils/departures';
-import { hasCoordinates, mapLinkUrl } from '../../utils/map';
+import { hasCoordinates } from '../../utils/map';
 import { INTEGRATION, refreshScheduler } from '../../utils/refresh-scheduler';
 import { PidDeparturesCardStyles } from './pid-departure-boards-ui-departures-styles';
 import type { HomeAssistant } from 'custom-card-helpers';
@@ -197,14 +197,13 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
   private _renderMap(attrs: PidSensorAttributes, title: string, localize: (key: string) => string): TemplateResult {
     const coordinates = hasCoordinates(attrs) ? attrs : undefined;
     return html`
-      <ha-dialog open .heading=${attrs.platform ? `${title} ${attrs.platform}` : title} @closed=${this._closeMap}>
+      <ha-dialog class="map-dialog" open .heading=${attrs.platform ? `${title} ${attrs.platform}` : title} @closed=${this._closeMap}>
         <pid-departure-boards-ui-map
           .hass=${this.hass}
           .entity=${this._config?.entity ?? ''}
           .latitude=${coordinates?.latitude}
           .longitude=${coordinates?.longitude}
         ></pid-departure-boards-ui-map>
-        ${coordinates ? html`<a class="map-link" href=${mapLinkUrl(coordinates.latitude, coordinates.longitude)} target="_blank" rel="noopener noreferrer">${localize('card.open_in_osm')}</a>` : nothing}
         <ha-button slot="primaryAction" @click=${this._closeMap}>${localize('card.close')}</ha-button>
       </ha-dialog>
     `;

@@ -223,9 +223,9 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
     color: var(--secondary-text-color);
   }
 
-  .map-link {
-    display: inline-block;
-    margin-top: 8px;
-    color: var(--primary-color);
+  /* width of the map popup; the map inside fills it (no horizontal scrollbar) */
+  .map-dialog {
+    --mdc-dialog-min-width: min(92vw, 640px);
+    --mdc-dialog-max-width: min(92vw, 640px);
   }
 `;

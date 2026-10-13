@@ -1,3 +1,4 @@
+import { departureTime } from './departures';
 import { buildRoute, passesWithin, projectOnRoute } from './route-position';
 import type { RouteLine } from './route-position';
 import type { HomeAssistant } from 'custom-card-helpers';
@@ -161,4 +162,28 @@ export function withoutPassedVehicles(
     else visible.push(vehicle);
   }
   return { visible, hidden: nowHidden };
+}
+
+// The vehicle closest to the stop in a straight line (the one that arrives next, among those that haven't passed it yet).
+export function nearestVehicle(vehicles: PidVehicle[], stop: StopPosition): PidVehicle | undefined {
+  const kx = Math.cos((stop.latitude * Math.PI) / 180);
+  const distance = (vehicle: PidVehicle): number => Math.hypot((vehicle.longitude - stop.longitude) * kx, vehicle.latitude - stop.latitude);
+  return vehicles.reduce<PidVehicle | undefined>((best, vehicle) => (best === undefined || distance(vehicle) < distance(best) ? vehicle : best), undefined);
+}
+
+// The vehicle of `route` that arrives at the stop next: the one on the earliest departure of that line (the sensor's departures carry the
+// trip_id of the vehicle); if no departure can be matched to a vehicle, the one closest to the stop, or the first one without a stop position.
+export function nextVehicleOfRoute(vehicles: PidVehicle[], route: string, departures: PidDeparture[] | undefined, stop: StopPosition | undefined): PidVehicle | undefined {
+  const candidates = vehicles.filter((vehicle) => vehicle.route === route);
+  if (candidates.length === 0) return undefined;
+  const upcoming = (departures ?? [])
+    .filter((departure) => departure.route === route && !departure.canceled && departure.trip_id !== null)
+    .map((departure) => ({ tripId: departure.trip_id, time: departureTime(departure)?.getTime() }))
+    .filter((entry): entry is { tripId: string | null; time: number } => entry.time !== undefined)
+    .sort((a, b) => a.time - b.time);
+  for (const entry of upcoming) {
+    const match = candidates.find((vehicle) => vehicle.trip_id === entry.tripId);
+    if (match) return match;
+  }
+  return (stop ? nearestVehicle(candidates, stop) : undefined) ?? candidates[0];
 }

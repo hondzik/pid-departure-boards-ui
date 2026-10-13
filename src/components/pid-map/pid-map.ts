@@ -3,9 +3,21 @@ import leafletCss from 'leaflet/dist/leaflet.css';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import setupCustomlocalize from '../../localize';
-import { isDarkMode } from '../../utils/map';
+import { isDarkMode, mapLinkUrl } from '../../utils/map';
 import { fetchTileToken, proxyTileUrl, TILE_MAX_NATIVE_ZOOM, TOKEN_REFRESH_MS, TOKEN_RETRY_THROTTLE_MS } from '../../utils/map-tiles';
-import { fetchRouteShapes, fetchVehicles, routeColor, routeTypes, toLatLngs, VEHICLE_POLL_MS, vehicleKey, vehicleTooltip, withoutPassedVehicles } from '../../utils/vehicles';
+import {
+  fetchRouteShapes,
+  fetchVehicles,
+  routeColor,
+  routeTypes,
+  toLatLngs,
+  VEHICLE_POLL_MS,
+  vehicleKey,
+  vehicleTooltip,
+  withoutPassedVehicles,
+  nearestVehicle,
+  nextVehicleOfRoute,
+} from '../../utils/vehicles';
 import type { PidRouteShape, PidVehicle } from '../../utils/vehicles';
 import type { HomeAssistant } from 'custom-card-helpers';
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit';
@@ -59,6 +71,9 @@ export class PidMap extends LitElement {
 
   private _passed = new Set<string>();
 
+  @state()
+  private _shown: PidVehicle[] = [];
+
   private _tiles?: L.TileLayer;
 
   private _tokenTimer?: number;
@@ -70,11 +85,13 @@ export class PidMap extends LitElement {
     css`
       :host {
         display: block;
+        width: 100%;
       }
 
       .map {
-        width: min(80vw, 640px);
-        height: 60vh;
+        width: 100%;
+        height: min(56vh, 520px);
+        min-height: 240px;
         background: var(--secondary-background-color);
       }
 
@@ -109,14 +126,27 @@ export class PidMap extends LitElement {
       }
 
       .chip {
+        border: 0;
+        font: inherit;
+        font-weight: bold;
+        cursor: pointer;
         padding: 0 6px;
         border-radius: 4px;
         font-weight: bold;
         color: #fff;
       }
 
+      .chip.none {
+        opacity: 0.45;
+        cursor: default;
+      }
+
       .status {
         margin-left: auto;
+      }
+
+      .osm-link {
+        color: var(--primary-color);
       }
 
       .status.error {
@@ -168,7 +198,21 @@ export class PidMap extends LitElement {
     return html`
       <div class="frame ${isDarkMode(this.hass) ? 'dark' : ''}"><div class="map"></div></div>
       <div class="legend">
-        ${this._routes.map((entry) => html`<span class="chip" style="background: ${entry.color}">${entry.route}</span>`)}
+        ${this._routes.map(
+          (entry) =>
+            html`<button
+              class="chip ${this._shown.some((vehicle) => vehicle.route === entry.route) ? '' : 'none'}"
+              style="background: ${entry.color}"
+              @click=${() => this._focusRoute(entry.route)}
+            >
+              ${entry.route}
+            </button>`,
+        )}
+        ${
+          Number.isFinite(this.latitude) && Number.isFinite(this.longitude)
+            ? html`<a class="osm-link" href=${mapLinkUrl(this.latitude as number, this.longitude as number)} target="_blank" rel="noopener noreferrer">${localize('card.open_in_osm')}</a>`
+            : nothing
+        }
         <span class="status ${this._error || this._tilesError ? 'error' : ''}">
           ${this._error || this._tilesError ? localize('card.map_error') : this._updated ? `${localize('card.map_updated')} ${this._updated.toLocaleTimeString(this.hass?.locale?.language)}` : nothing}
         </span>
@@ -323,11 +367,25 @@ export class PidMap extends LitElement {
     }
   }
 
+  private get _stop(): { latitude: number; longitude: number } | undefined {
+    return Number.isFinite(this.latitude) && Number.isFinite(this.longitude) ? { latitude: this.latitude as number, longitude: this.longitude as number } : undefined;
+  }
+
+  // Click on a line in the legend: center the map on the vehicle of that line that arrives at the stop next.
+  private _focusRoute(route: string): void {
+    const attrs = this.hass?.states[this.entity]?.attributes as { departures?: PidDeparture[] } | undefined;
+    const vehicle = nextVehicleOfRoute(this._shown, route, attrs?.departures, this._stop);
+    if (!vehicle || !this._map) return;
+    this._map.setView([vehicle.latitude, vehicle.longitude], Math.max(this._map.getZoom(), 16), { animate: true });
+    this._markers.get(vehicleKey(vehicle))?.openTooltip();
+  }
+
   private _drawVehicles(allVehicles: PidVehicle[]): void {
     // vehicles that already served the stop and head on to the end of the line are not shown
     const stop = Number.isFinite(this.latitude) && Number.isFinite(this.longitude) ? { latitude: this.latitude as number, longitude: this.longitude as number } : undefined;
     const { visible: vehicles, hidden } = withoutPassedVehicles(allVehicles, this._shapes, stop, this._passed);
     this._passed = hidden;
+    this._shown = vehicles;
     const types = this._types;
     const seen = new Set<string>();
     for (const vehicle of vehicles) {
@@ -355,11 +413,12 @@ export class PidMap extends LitElement {
         this._markers.delete(key);
       }
     }
-    // the first fix: make sure the stop and the vehicles around it are in view
+    // the first fix: zoom so that the stop and the nearest vehicle are in view (all vehicles when the stop position is unknown)
     if (!this._fitted && vehicles.length > 0 && this._map) {
-      const points: L.LatLngExpression[] = vehicles.map((vehicle) => [vehicle.latitude, vehicle.longitude]);
-      if (Number.isFinite(this.latitude) && Number.isFinite(this.longitude)) points.push([this.latitude as number, this.longitude as number]);
-      this._map.fitBounds(L.latLngBounds(points), { padding: [32, 32], maxZoom: 16 });
+      const nearest = stop ? nearestVehicle(vehicles, stop) : undefined;
+      const points: L.LatLngExpression[] = (nearest ? [nearest] : vehicles).map((vehicle) => [vehicle.latitude, vehicle.longitude]);
+      if (stop) points.push([stop.latitude, stop.longitude]);
+      this._map.fitBounds(L.latLngBounds(points), { padding: [48, 48], maxZoom: 17 });
       this._fitted = true;
     }
   }

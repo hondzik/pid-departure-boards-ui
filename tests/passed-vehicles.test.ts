@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import coordinates from './fixtures/shape_L20V2_coordinates.json';
 import { buildRoute, passesWithin, pointAtDistance, projectOnRoute } from '../src/utils/route-position';
-import { PASSED_MARGIN_M, vehicleKey, withoutPassedVehicles } from '../src/utils/vehicles';
+import { nearestVehicle, nextVehicleOfRoute, PASSED_MARGIN_M, vehicleKey, withoutPassedVehicles } from '../src/utils/vehicles';
 import type { LonLat } from '../src/utils/route-position';
 import type { PidRouteShape, PidVehicle } from '../src/utils/vehicles';
 
@@ -86,5 +86,49 @@ describe('withoutPassedVehicles', () => {
     const [longitude, latitude] = pointAtDistance(loopLine, STOP_ALONG + 600);
     const vehicle = vehicleAt(0, { latitude, longitude });
     expect(run([vehicle], new Set(), [loop]).visible).toEqual([vehicle]);
+  });
+});
+
+describe('nearestVehicle', () => {
+  it('picks the vehicle closest to the stop', () => {
+    const far = vehicleAt(STOP_ALONG - 3000);
+    const near = vehicleAt(STOP_ALONG - 200);
+    const middle = vehicleAt(STOP_ALONG - 900);
+    expect(nearestVehicle([far, near, middle], STOP)).toBe(near);
+    expect(nearestVehicle([far, middle], STOP)).toBe(middle);
+  });
+
+  it('has no answer without vehicles', () => {
+    expect(nearestVehicle([], STOP)).toBeUndefined();
+  });
+});
+
+describe('nextVehicleOfRoute', () => {
+  const at = (minutes: number) => new Date(Date.parse('2026-10-14T10:00:00+02:00') + minutes * 60000).toISOString();
+  const departure = (trip_id: string | null, minutes: number, patch: Partial<PidDeparture> = {}): PidDeparture =>
+    ({ route: '20', trip_id, predicted: at(minutes), scheduled: at(minutes), canceled: false, ...patch }) as PidDeparture;
+  const near = vehicleAt(STOP_ALONG - 200, { trip_id: 'near' });
+  const far = vehicleAt(STOP_ALONG - 2000, { trip_id: 'far' });
+  const other = vehicleAt(STOP_ALONG - 50, { route: '9', trip_id: 'other' });
+
+  it('prefers the vehicle on the earliest departure of the line', () => {
+    // the sensor lists the farther vehicle first (e.g. the nearer one is delayed less/more than expected): the earliest departure wins
+    expect(nextVehicleOfRoute([near, far, other], '20', [departure('near', 5), departure('far', 2)], STOP)).toBe(far);
+    expect(nextVehicleOfRoute([near, far, other], '20', [departure('far', 9), departure('near', 3)], STOP)).toBe(near);
+  });
+
+  it('skips canceled departures and departures without a matching vehicle', () => {
+    const departures = [departure('gone', 1), departure('far', 2, { canceled: true }), departure(null, 3), departure('near', 4)];
+    expect(nextVehicleOfRoute([near, far], '20', departures, STOP)).toBe(near);
+  });
+
+  it('falls back to the vehicle nearest to the stop, or the first one without a stop position', () => {
+    expect(nextVehicleOfRoute([far, near], '20', [], STOP)).toBe(near);
+    expect(nextVehicleOfRoute([far, near], '20', undefined, STOP)).toBe(near);
+    expect(nextVehicleOfRoute([far, near], '20', [], undefined)).toBe(far);
+  });
+
+  it('has no answer for a line without vehicles', () => {
+    expect(nextVehicleOfRoute([near, far], '136', [], STOP)).toBeUndefined();
   });
 });

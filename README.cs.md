@@ -18,6 +18,10 @@
   - [Jak funguje](#jak-funguje)
   - [Možnosti konfigurace](#možnosti-konfigurace)
   - [Použití vizuálního editoru](#použití-vizuálního-editoru)
+- [Okno s mapou](#okno-s-mapou)
+  - [Co mapa zobrazuje](#co-mapa-zobrazuje)
+  - [Ovládání](#ovládání)
+  - [Požadavky a omezení](#požadavky-a-omezení)
 - [Řešení problémů](#řešení-problémů)
 - [Překlady](#překlady)
 - [Přispěvatelé](#přispěvatelé)
@@ -59,7 +63,7 @@ V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na
 - Zobrazený čas je vždy podle jízdního řádu a zpoždění je uvedeno vedle něj; odpočet, řazení a obnova používají reálný očekávaný čas včetně zpoždění. Odjezdy, které už odjely, samy zmizí.
 - Zrušené spoje jsou přeškrtnuté; řádek bliká, dokud vůz stojí v zastávce (po najetí myší se zobrazí „na zastávce"; při zapnutém omezení animací se řádek místo toho zvýrazní).
 - Oznámení (např. výluky) z integrace jsou zobrazena pod názvem zastávky v jednom řádku, který se nepřetržitě posouvá (více oznámení se spojí mezerou).
-- Kliknutím na název zastávky se otevře okno s mapou, na které jsou trasy linek obsluhujících zastávku a aktuální pozice jejich vozidel (obnovují se každých 12 sekund, dokud je mapa otevřená). Vyžaduje verzi integrace se službami `get_route_shapes` a `get_vehicle_positions` (>=1.2.0).
+- Kliknutím na název zastávky se otevře [okno s mapou](#okno-s-mapou) s trasami a aktuálními pozicemi vozidel.
 - Výška karty sleduje mřížku dashboardu: při změně velikosti v editoru zobrazí tolik odjezdů, kolik se vejde (2 řádky = 1 odjezd, 3 řádky = 3, 4 řádky = 5, ...).
 - Stav senzoru se mění jen při aktualizaci integrace, takže odpočet „za X min" počítá karta sama.
 - **Aktualizace:** tlačítko vpravo nahoře obnoví senzor okamžitě. Navíc karta obnovuje senzor každou minutu od chvíle, kdy je nejbližší odjezd blíž než nastavený počet minut. Pro všechny karty na stránce běží jeden sdílený časovač, senzory splatné ve stejnou chvíli se obnoví jedním voláním a více karet se stejným senzorem ho obnoví jen jednou — víc karet tak nevyčerpá limit požadavků API Golemio.
@@ -92,11 +96,42 @@ Kartu přidejte z nabídky karet (nabízí se pro senzory integrace `pid_departu
 
 ![Editor odjezdové tabule](docs/images/editor.cs.png)
 
+## Okno s mapou
+
+Kliknutím na název zastávky v záhlaví karty se otevře mapa zastávky.
+
+![Okno s mapou](docs/images/map.png)
+
+### Co mapa zobrazuje
+
+- **Zastávku** jako červenou tečku (pokud senzor poskytuje její polohu) a podkladovou mapu z vestavěných dlaždic map Home Assistantu; v tmavém motivu je tmavá i mapa.
+- **Trasy** všech linek sledovaných senzorem, nakreslené ve směru, který nástupiště obsluhuje. Barvy odpovídají typu vozidla: tramvaje červeně, autobusy modře, trolejbusy zeleně, vlaky fialově, přívozy tyrkysově, noční linky tmavě; linky metra mají vlastní barvy (A zelená, B žlutá, C červená).
+- **Vozidla** těchto linek jako barevné kruhy s číslem linky. Malá šipka ukazuje směr jízdy; vozidlo stojící v zastávce je světlejší. Po najetí myší (nebo klepnutí) na vozidlo se zobrazí linka, cíl a zpoždění.
+- **Jen vozidla, která mají zastávku ještě před sebou.** Vozidlo, které zastávku už obsloužilo a jede dál na konec linky, se skryje (rozhoduje poloha podél trasy; vozidlo stojící na nástupišti se ještě ukazuje). Pokud to nelze určit — třeba u linky bez referenčního spoje, u smyčky, která zastávkou projíždí dvakrát, nebo u vozidla na jiné variantě trasy — vozidlo se ukáže.
+- **Aktuální pozice.** Obnovují se každých 12 sekund, dokud je mapa otevřená a záložka prohlížeče viditelná; pod mapou je vidět, kdy byla data naposledy aktualizována. Trasy se načtou jednou při otevření mapy.
+- **Legendu** pod mapou s linkami v jejich barvách.
+
+### Ovládání
+
+- **Otevření:** klik na název zastávky. **Zavření:** tlačítko *Zavřít*, klávesa `Esc` nebo klik mimo okno.
+- **Přiblížení a posun** mapy kolečkem myši, tlačítky +/−, dvojklikem nebo tažením; na telefonu gestem dvou prstů.
+- **Úvodní pohled:** mapa se přiblíží tak, aby byla vidět zastávka a nejbližší vozidlo (všechna vozidla, pokud senzor nemá polohu zastávky).
+- **Klik na číslo linky v legendě** vycentruje mapu na vozidlo této linky, které přijede k zastávce nejdřív; otevře se jeho popisek. Linky, které teď nemají na mapě žádné vozidlo, jsou zešedlé.
+- **Otevřít v OpenStreetMap** (odkaz pod mapou) otevře polohu zastávky v plné mapě na nové záložce.
+
+### Požadavky a omezení
+
+- Home Assistant 2026.10.0 nebo novější — dlaždice servíruje vestavěná integrace *Map tiles* v HA, takže se prohlížeč nikdy nepřipojuje přímo k serveru s dlaždicemi.
+- Verze integrace `pid_departure_boards` se službami `get_route_shapes` a `get_vehicle_positions`. Poloha zastávky (atributy `latitude` a `longitude` senzoru) je nepovinná, ale potřebná pro značku zastávky, úvodní přiblížení a skrývání vozidel, která zastávku už projela. Nástupiště přidaná do integrace dřív, než poskytovala polohu, je třeba přidat znovu.
+- API Golemio omezuje počet požadavků (20 za 8 sekund na token) a odjezdy sdílejí tento limit s mapou. Mapu mějte otevřenou jen, když ji potřebujete.
+
 ## Řešení problémů
 
 - **Karta se u mého senzoru nenabízí** — po výběru entity se karta nabízí jen u senzorů integrace `pid_departure_boards`; jinak ji vyberte ručně ze „Všech karet" („Custom: PID Departure Board"). Po aktualizaci karty obnovte cache prohlížeče.
 - **Tabule zobrazuje „Odjezdy nejsou dostupné"** — integrace se nepodařilo aktualizovat z API; zkontrolujte logy integrace.
 - **Čas se mezi aktualizacemi neodpočítává** — ověřte, že karta v prohlížeči není uspaná; odpočet se počítá v prohlížeči každých pár sekund.
+- **Mapa ukazuje „Data mapy nejsou dostupná“ nebo nemá podklad** — mapa vyžaduje Home Assistant 2026.10.0 nebo novější (dlaždice map) a verzi integrace se službami pro mapu; podrobnosti jsou v konzoli prohlížeče.
+- **Zastávka není označená a projetá vozidla se stále zobrazují** — senzor nemá atributy `latitude`/`longitude`; viz [Požadavky a omezení](#požadavky-a-omezení).
 - **Nezobrazuje se zpoždění** — zobrazí se jen tehdy, když ho vůz hlásí (`+m` při kladném zpoždění).
 
 ## Překlady
