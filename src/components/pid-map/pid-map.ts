@@ -4,18 +4,14 @@ import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import setupCustomlocalize from '../../localize';
 import { isDarkMode } from '../../utils/map';
+import { fetchTileToken, proxyTileUrl, TILE_MAX_NATIVE_ZOOM, TOKEN_REFRESH_MS, TOKEN_RETRY_THROTTLE_MS } from '../../utils/map-tiles';
 import { fetchRouteShapes, fetchVehicles, routeColor, routeTypes, toLatLngs, VEHICLE_POLL_MS, vehicleKey, vehicleTooltip } from '../../utils/vehicles';
 import type { PidRouteShape, PidVehicle } from '../../utils/vehicles';
 import type { HomeAssistant } from 'custom-card-helpers';
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit';
 
-// CARTO basemaps (OpenStreetMap data): unlike tile.openstreetmap.org they work without a Referer header, which the HA frontend doesn't send
-// (OSM answers 403 "Access blocked"), and they come with a native dark style.
-const TILE_ATTRIBUTION = '© OpenStreetMap contributors © CARTO';
-const TILES = {
-  light: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-};
+// Tiles come through HA's own tile proxy (integration Map tiles, Home Assistant 2026.10+; see utils/map-tiles.ts).
+const TILE_ATTRIBUTION = '© OpenStreetMap contributors';
 const DEFAULT_CENTER: [number, number] = [50.0755, 14.4378];
 
 // Map of one stop: the lines serving it (drawn once) and the live positions of their vehicles (polled while visible).
@@ -40,6 +36,9 @@ export class PidMap extends LitElement {
   private _error = false;
 
   @state()
+  private _tilesError = false;
+
+  @state()
   private _routes: { route: string; color: string }[] = [];
 
   private _map?: L.Map;
@@ -58,7 +57,9 @@ export class PidMap extends LitElement {
 
   private _tiles?: L.TileLayer;
 
-  private _tilesDark?: boolean;
+  private _tokenTimer?: number;
+
+  private _lastTokenRetry = 0;
 
   public static styles: CSSResultGroup = [
     unsafeCSS(leafletCss),
@@ -71,6 +72,11 @@ export class PidMap extends LitElement {
         width: min(80vw, 640px);
         height: 60vh;
         background: var(--secondary-background-color);
+      }
+
+      /* the light tiles are inverted for the dark theme (only the tiles, not the markers and routes) */
+      .frame.dark .leaflet-tile-pane {
+        filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9);
       }
 
       .frame.dark .leaflet-control-attribution {
@@ -159,8 +165,8 @@ export class PidMap extends LitElement {
       <div class="frame ${isDarkMode(this.hass) ? 'dark' : ''}"><div class="map"></div></div>
       <div class="legend">
         ${this._routes.map((entry) => html`<span class="chip" style="background: ${entry.color}">${entry.route}</span>`)}
-        <span class="status ${this._error ? 'error' : ''}">
-          ${this._error ? localize('card.map_error') : this._updated ? `${localize('card.map_updated')} ${this._updated.toLocaleTimeString(this.hass?.locale?.language)}` : nothing}
+        <span class="status ${this._error || this._tilesError ? 'error' : ''}">
+          ${this._error || this._tilesError ? localize('card.map_error') : this._updated ? `${localize('card.map_updated')} ${this._updated.toLocaleTimeString(this.hass?.locale?.language)}` : nothing}
         </span>
       </div>
     `;
@@ -170,7 +176,7 @@ export class PidMap extends LitElement {
     const container = this.renderRoot.querySelector('.map') as HTMLElement;
     const hasCenter = Number.isFinite(this.latitude) && Number.isFinite(this.longitude);
     this._map = L.map(container, { zoomControl: true, attributionControl: true });
-    this._applyTiles();
+    void this._initTiles();
     this._shapeLayer.addTo(this._map);
     this._vehicleLayer.addTo(this._map);
     this._map.setView(hasCenter ? [this.latitude as number, this.longitude as number] : DEFAULT_CENTER, hasCenter ? 16 : 12);
@@ -192,6 +198,8 @@ export class PidMap extends LitElement {
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
+    window.clearInterval(this._tokenTimer);
+    this._tokenTimer = undefined;
     this._stopPolling();
     document.removeEventListener('visibilitychange', this._onVisibility);
     this._resizeObserver?.disconnect();
@@ -199,18 +207,44 @@ export class PidMap extends LitElement {
     this._map = undefined;
   }
 
-  // light or dark base map, switched when the dashboard theme changes
-  private _applyTiles(): void {
-    const dark = isDarkMode(this.hass);
-    if (!this._map || dark === this._tilesDark) return;
-    this._tiles?.remove();
-    this._tiles = L.tileLayer(dark ? TILES.dark : TILES.light, { maxZoom: 19, subdomains: 'abcd', detectRetina: true, attribution: TILE_ATTRIBUTION }).addTo(this._map);
-    this._tiles.bringToBack();
-    this._tilesDark = dark;
+  // Base map: tiles through HA's proxy with its rotating access token.
+  private async _initTiles(): Promise<void> {
+    let token: string | undefined;
+    try {
+      token = this.hass ? await fetchTileToken(this.hass) : undefined;
+    } catch (err) {
+      console.error('pid-departure-boards-ui: the map tiles token is not available (needs Home Assistant 2026.10+ with the Map tiles integration)', err);
+    }
+    if (!this._map) return; // the dialog was closed meanwhile
+    if (!token) {
+      this._tilesError = true;
+      return;
+    }
+    // Leaflet substitutes unknown options into the template, its types don't know that
+    this._tiles = L.tileLayer(proxyTileUrl(), { maxZoom: 20, maxNativeZoom: TILE_MAX_NATIVE_ZOOM, attribution: TILE_ATTRIBUTION, token } as L.TileLayerOptions).addTo(this._map);
+    this._tiles.on('tileerror', () => void this._refreshToken(true));
+    this._tokenTimer = window.setInterval(() => void this._refreshToken(false), TOKEN_REFRESH_MS);
+  }
+
+  private async _refreshToken(afterError: boolean): Promise<void> {
+    if (!this.hass || !this._tiles) return;
+    if (afterError) {
+      // a refused tile means a stale token; one request per throttle window, not one per tile
+      if (Date.now() - this._lastTokenRetry < TOKEN_RETRY_THROTTLE_MS) return;
+      this._lastTokenRetry = Date.now();
+    }
+    try {
+      const token = await fetchTileToken(this.hass);
+      if (token && (this._tiles.options as { token?: string }).token !== token) {
+        (this._tiles.options as { token?: string }).token = token;
+        if (afterError) this._tiles.redraw();
+      }
+    } catch (err) {
+      console.error('pid-departure-boards-ui: refreshing the map tiles token failed', err);
+    }
   }
 
   protected updated(changed: PropertyValues): void {
-    if (changed.has('hass')) this._applyTiles();
     if (changed.has('entity') && changed.get('entity') !== undefined && this._map) {
       this._fitted = false;
       void this._loadShapes();

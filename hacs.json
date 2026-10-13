@@ -3,5 +3,5 @@
   "render_readme": true,
   "filename": "pid-departure-boards-ui.js",
   "content_in_root": false,
-  "homeassistant": "2026.9.0"
+  "homeassistant": "2026.10.0"
 }

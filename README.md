@@ -36,6 +36,7 @@ This is a custom Home Assistant Lovelace **card** that shows a departure board f
 
 ## Requirements
 
+- Home Assistant 2026.10.0 or newer (the map in the popup uses HA's built-in map tiles).
 - The [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) integration set up with at least one stop platform (one sensor per platform).
 
 ## Installation

@@ -36,6 +36,7 @@ Vlastní Lovelace **karta** pro Home Assistant, která zobrazuje odjezdovou tabu
 
 ## Požadavky
 
+- Home Assistant 2026.10.0 nebo novější (mapa v okně používá vestavěné dlaždice map HA).
 - Nastavená integrace [`pid_departure_boards`](https://github.com/hondzik/pid-departure-boards) alespoň s jedním nástupištěm (jeden senzor na nástupiště).
 
 ## Instalace

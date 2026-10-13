@@ -30,7 +30,8 @@
     "version": "npm run build && git add dist",
     "version MAJOR": "npm version major",
     "version MINOR": "npm version minor",
-    "version PATCH": "npm version patch"
+    "version PATCH": "npm version patch",
+    "version CUSTOM": "node scripts/version-custom.js"
   },
   "devDependencies": {
     "@eslint/markdown": "^8.0.3",
