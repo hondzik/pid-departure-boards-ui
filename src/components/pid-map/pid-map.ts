@@ -9,7 +9,13 @@ import type { PidRouteShape, PidVehicle } from '../../utils/vehicles';
 import type { HomeAssistant } from 'custom-card-helpers';
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit';
 
-const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+// CARTO basemaps (OpenStreetMap data): unlike tile.openstreetmap.org they work without a Referer header, which the HA frontend doesn't send
+// (OSM answers 403 "Access blocked"), and they come with a native dark style.
+const TILE_ATTRIBUTION = '© OpenStreetMap contributors © CARTO';
+const TILES = {
+  light: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+};
 const DEFAULT_CENTER: [number, number] = [50.0755, 14.4378];
 
 // Map of one stop: the lines serving it (drawn once) and the live positions of their vehicles (polled while visible).
@@ -50,6 +56,10 @@ export class PidMap extends LitElement {
 
   private _fitted = false;
 
+  private _tiles?: L.TileLayer;
+
+  private _tilesDark?: boolean;
+
   public static styles: CSSResultGroup = [
     unsafeCSS(leafletCss),
     css`
@@ -61,11 +71,6 @@ export class PidMap extends LitElement {
         width: min(80vw, 640px);
         height: 60vh;
         background: var(--secondary-background-color);
-      }
-
-      /* the light OpenStreetMap tiles are inverted for the dark theme (only the tiles, not the markers and routes) */
-      .frame.dark .leaflet-tile-pane {
-        filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9);
       }
 
       .frame.dark .leaflet-control-attribution {
@@ -165,7 +170,7 @@ export class PidMap extends LitElement {
     const container = this.renderRoot.querySelector('.map') as HTMLElement;
     const hasCenter = Number.isFinite(this.latitude) && Number.isFinite(this.longitude);
     this._map = L.map(container, { zoomControl: true, attributionControl: true });
-    L.tileLayer(TILE_URL, { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(this._map);
+    this._applyTiles();
     this._shapeLayer.addTo(this._map);
     this._vehicleLayer.addTo(this._map);
     this._map.setView(hasCenter ? [this.latitude as number, this.longitude as number] : DEFAULT_CENTER, hasCenter ? 16 : 12);
@@ -194,7 +199,18 @@ export class PidMap extends LitElement {
     this._map = undefined;
   }
 
+  // light or dark base map, switched when the dashboard theme changes
+  private _applyTiles(): void {
+    const dark = isDarkMode(this.hass);
+    if (!this._map || dark === this._tilesDark) return;
+    this._tiles?.remove();
+    this._tiles = L.tileLayer(dark ? TILES.dark : TILES.light, { maxZoom: 19, subdomains: 'abcd', detectRetina: true, attribution: TILE_ATTRIBUTION }).addTo(this._map);
+    this._tiles.bringToBack();
+    this._tilesDark = dark;
+  }
+
   protected updated(changed: PropertyValues): void {
+    if (changed.has('hass')) this._applyTiles();
     if (changed.has('entity') && changed.get('entity') !== undefined && this._map) {
       this._fitted = false;
       void this._loadShapes();
