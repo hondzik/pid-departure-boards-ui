@@ -12,7 +12,9 @@
     "air_conditioned": "Air conditioned",
     "show_map": "Show map",
     "close": "Close",
-    "open_in_osm": "Open in OpenStreetMap"
+    "open_in_osm": "Open in OpenStreetMap",
+    "map_updated": "Updated",
+    "map_error": "Map data unavailable"
   },
   "editor": {
     "entity": "Departure board sensor",

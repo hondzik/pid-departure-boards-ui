@@ -12,7 +12,9 @@
     "air_conditioned": "Luftkonditionering",
     "show_map": "Visa karta",
     "close": "Stäng",
-    "open_in_osm": "Öppna i OpenStreetMap"
+    "open_in_osm": "Öppna i OpenStreetMap",
+    "map_updated": "Uppdaterad",
+    "map_error": "Kartdata är inte tillgängliga"
   },
   "editor": {
     "entity": "Sensor för avgångstavla",

@@ -12,7 +12,9 @@
     "air_conditioned": "ממוזג",
     "show_map": "הצג מפה",
     "close": "סגור",
-    "open_in_osm": "פתח ב-OpenStreetMap"
+    "open_in_osm": "פתח ב-OpenStreetMap",
+    "map_updated": "עודכן",
+    "map_error": "נתוני המפה אינם זמינים"
   },
   "editor": {
     "entity": "חיישן לוח היציאות",

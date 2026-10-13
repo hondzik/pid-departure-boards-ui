@@ -12,7 +12,9 @@
     "air_conditioned": "Climatisé",
     "show_map": "Afficher la carte",
     "close": "Fermer",
-    "open_in_osm": "Ouvrir dans OpenStreetMap"
+    "open_in_osm": "Ouvrir dans OpenStreetMap",
+    "map_updated": "Mis à jour",
+    "map_error": "Données de la carte indisponibles"
   },
   "editor": {
     "entity": "Capteur du tableau des départs",

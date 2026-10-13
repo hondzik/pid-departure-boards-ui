@@ -12,7 +12,9 @@
     "air_conditioned": "Légkondicionált",
     "show_map": "Térkép megjelenítése",
     "close": "Bezárás",
-    "open_in_osm": "Megnyitás az OpenStreetMapon"
+    "open_in_osm": "Megnyitás az OpenStreetMapon",
+    "map_updated": "Frissítve",
+    "map_error": "A térképadatok nem érhetők el"
   },
   "editor": {
     "entity": "Indulási tábla érzékelő",

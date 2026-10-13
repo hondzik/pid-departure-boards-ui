@@ -12,7 +12,9 @@
     "air_conditioned": "Klimatizácia",
     "show_map": "Zobraziť mapu",
     "close": "Zavrieť",
-    "open_in_osm": "Otvoriť v OpenStreetMap"
+    "open_in_osm": "Otvoriť v OpenStreetMap",
+    "map_updated": "Aktualizované",
+    "map_error": "Údaje mapy nie sú dostupné"
   },
   "editor": {
     "entity": "Senzor odchodovej tabule",

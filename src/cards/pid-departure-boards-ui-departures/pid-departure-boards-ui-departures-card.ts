@@ -1,5 +1,6 @@
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import '../../components/pid-map/pid-map';
 import setupCustomlocalize from '../../localize';
 import {
   capacityForRows,
@@ -16,7 +17,7 @@ import {
   scheduledTime,
   visibleDepartures,
 } from '../../utils/departures';
-import { embedMapUrl, hasCoordinates, mapLinkUrl, searchMapUrl } from '../../utils/map';
+import { hasCoordinates, mapLinkUrl } from '../../utils/map';
 import { INTEGRATION, refreshScheduler } from '../../utils/refresh-scheduler';
 import { PidDeparturesCardStyles } from './pid-departure-boards-ui-departures-styles';
 import type { HomeAssistant } from 'custom-card-helpers';
@@ -195,10 +196,14 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
 
   private _renderMap(attrs: PidSensorAttributes, title: string, localize: (key: string) => string): TemplateResult {
     const coordinates = hasCoordinates(attrs) ? attrs : undefined;
-    const src = coordinates ? embedMapUrl(coordinates.latitude, coordinates.longitude) : searchMapUrl(attrs.stop_name || title);
     return html`
       <ha-dialog open .heading=${attrs.platform ? `${title} ${attrs.platform}` : title} @closed=${this._closeMap}>
-        <iframe class="map" src=${src} loading="lazy" referrerpolicy="no-referrer" title=${title}></iframe>
+        <pid-departure-boards-ui-map
+          .hass=${this.hass}
+          .entity=${this._config?.entity ?? ''}
+          .latitude=${coordinates?.latitude}
+          .longitude=${coordinates?.longitude}
+        ></pid-departure-boards-ui-map>
         ${coordinates ? html`<a class="map-link" href=${mapLinkUrl(coordinates.latitude, coordinates.longitude)} target="_blank" rel="noopener noreferrer">${localize('card.open_in_osm')}</a>` : nothing}
         <ha-button slot="primaryAction" @click=${this._closeMap}>${localize('card.close')}</ha-button>
       </ha-dialog>

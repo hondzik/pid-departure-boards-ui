@@ -12,7 +12,9 @@
     "air_conditioned": "Ar condicionado",
     "show_map": "Mostrar mapa",
     "close": "Fechar",
-    "open_in_osm": "Abrir no OpenStreetMap"
+    "open_in_osm": "Abrir no OpenStreetMap",
+    "map_updated": "Atualizado",
+    "map_error": "Dados do mapa indisponíveis"
   },
   "editor": {
     "entity": "Sensor do painel de partidas",

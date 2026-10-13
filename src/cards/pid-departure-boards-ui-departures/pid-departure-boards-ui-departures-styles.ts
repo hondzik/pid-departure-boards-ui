@@ -223,13 +223,6 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
     color: var(--secondary-text-color);
   }
 
-  .map {
-    display: block;
-    width: min(80vw, 640px);
-    height: 60vh;
-    border: 0;
-  }
-
   .map-link {
     display: inline-block;
     margin-top: 8px;

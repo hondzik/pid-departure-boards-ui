@@ -58,7 +58,7 @@ V záhlaví karty je název zastávky a nástupiště, pod ním jeden řádek na
 - Zobrazený čas je vždy podle jízdního řádu a zpoždění je uvedeno vedle něj; odpočet, řazení a obnova používají reálný očekávaný čas včetně zpoždění. Odjezdy, které už odjely, samy zmizí.
 - Zrušené spoje jsou přeškrtnuté; řádek bliká, dokud vůz stojí v zastávce (po najetí myší se zobrazí „na zastávce"; při zapnutém omezení animací se řádek místo toho zvýrazní).
 - Oznámení (např. výluky) z integrace jsou zobrazena pod názvem zastávky v jednom řádku, který se nepřetržitě posouvá (více oznámení se spojí mezerou).
-- Kliknutím na název zastávky se v okně zobrazí mapa zastávky.
+- Kliknutím na název zastávky se otevře okno s mapou, na které jsou trasy linek obsluhujících zastávku a aktuální pozice jejich vozidel (obnovují se každých 12 sekund, dokud je mapa otevřená). Vyžaduje verzi integrace se službami `get_route_shapes` a `get_vehicle_positions`.
 - Výška karty sleduje mřížku dashboardu: při změně velikosti v editoru zobrazí tolik odjezdů, kolik se vejde (2 řádky = 1 odjezd, 3 řádky = 3, 4 řádky = 5, ...).
 - Stav senzoru se mění jen při aktualizaci integrace, takže odpočet „za X min" počítá karta sama.
 - **Aktualizace:** tlačítko vpravo nahoře obnoví senzor okamžitě. Navíc karta obnovuje senzor každou minutu od chvíle, kdy je nejbližší odjezd blíž než nastavený počet minut. Pro všechny karty na stránce běží jeden sdílený časovač, senzory splatné ve stejnou chvíli se obnoví jedním voláním a více karet se stejným senzorem ho obnoví jen jednou — víc karet tak nevyčerpá limit požadavků API Golemio.

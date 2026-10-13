@@ -5,6 +5,14 @@ import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import summary from 'rollup-plugin-summary';
 
+// `import css from './x.css'` -> the file's text (used to put Leaflet's stylesheet into the card's shadow DOM)
+const cssText = {
+  name: 'css-text',
+  transform(code, id) {
+    return id.endsWith('.css') ? { code: `export default ${JSON.stringify(code)};`, map: null } : null;
+  },
+};
+
 export default {
   input: 'src/pid-departure-boards-ui.ts',
   output: {
@@ -13,6 +21,7 @@ export default {
     sourcemap: false,
   },
   plugins: [
+    cssText,
     resolve({
       browser: true,
       preferBuiltins: false,

@@ -12,7 +12,9 @@
     "air_conditioned": "Aria condizionata",
     "show_map": "Mostra mappa",
     "close": "Chiudi",
-    "open_in_osm": "Apri in OpenStreetMap"
+    "open_in_osm": "Apri in OpenStreetMap",
+    "map_updated": "Aggiornato",
+    "map_error": "Dati della mappa non disponibili"
   },
   "editor": {
     "entity": "Sensore del tabellone partenze",

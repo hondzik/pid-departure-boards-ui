@@ -12,7 +12,9 @@
     "air_conditioned": "Airconditioning",
     "show_map": "Kaart tonen",
     "close": "Sluiten",
-    "open_in_osm": "Openen in OpenStreetMap"
+    "open_in_osm": "Openen in OpenStreetMap",
+    "map_updated": "Bijgewerkt",
+    "map_error": "Kaartgegevens niet beschikbaar"
   },
   "editor": {
     "entity": "Sensor van het vertrekbord",

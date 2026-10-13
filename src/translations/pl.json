@@ -12,7 +12,9 @@
     "air_conditioned": "Klimatyzacja",
     "show_map": "Pokaż mapę",
     "close": "Zamknij",
-    "open_in_osm": "Otwórz w OpenStreetMap"
+    "open_in_osm": "Otwórz w OpenStreetMap",
+    "map_updated": "Zaktualizowano",
+    "map_error": "Dane mapy są niedostępne"
   },
   "editor": {
     "entity": "Czujnik tablicy odjazdów",

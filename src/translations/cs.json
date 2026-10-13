@@ -12,7 +12,9 @@
     "air_conditioned": "Klimatizace",
     "show_map": "Zobrazit mapu",
     "close": "Zavřít",
-    "open_in_osm": "Otevřít v OpenStreetMap"
+    "open_in_osm": "Otevřít v OpenStreetMap",
+    "map_updated": "Aktualizováno",
+    "map_error": "Data mapy nejsou dostupná"
   },
   "editor": {
     "entity": "Senzor odjezdové tabule",

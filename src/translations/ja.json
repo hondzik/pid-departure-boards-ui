@@ -12,7 +12,9 @@
     "air_conditioned": "冷房あり",
     "show_map": "地図を表示",
     "close": "閉じる",
-    "open_in_osm": "OpenStreetMap で開く"
+    "open_in_osm": "OpenStreetMap で開く",
+    "map_updated": "更新",
+    "map_error": "地図データを取得できません"
   },
   "editor": {
     "entity": "発車案内センサー",

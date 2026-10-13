@@ -12,7 +12,9 @@
     "air_conditioned": "Klimaanlegg",
     "show_map": "Vis kart",
     "close": "Lukk",
-    "open_in_osm": "Åpne i OpenStreetMap"
+    "open_in_osm": "Åpne i OpenStreetMap",
+    "map_updated": "Oppdatert",
+    "map_error": "Kartdata er ikke tilgjengelig"
   },
   "editor": {
     "entity": "Sensor for avgangstavle",

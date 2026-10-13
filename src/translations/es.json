@@ -12,7 +12,9 @@
     "air_conditioned": "Aire acondicionado",
     "show_map": "Mostrar mapa",
     "close": "Cerrar",
-    "open_in_osm": "Abrir en OpenStreetMap"
+    "open_in_osm": "Abrir en OpenStreetMap",
+    "map_updated": "Actualizado",
+    "map_error": "Datos del mapa no disponibles"
   },
   "editor": {
     "entity": "Sensor del panel de salidas",

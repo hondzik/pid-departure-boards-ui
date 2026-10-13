@@ -12,7 +12,9 @@
     "air_conditioned": "Кондиціонер",
     "show_map": "Показати мапу",
     "close": "Закрити",
-    "open_in_osm": "Відкрити в OpenStreetMap"
+    "open_in_osm": "Відкрити в OpenStreetMap",
+    "map_updated": "Оновлено",
+    "map_error": "Дані мапи недоступні"
   },
   "editor": {
     "entity": "Сенсор табло відправлень",

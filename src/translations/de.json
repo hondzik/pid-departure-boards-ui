@@ -12,7 +12,9 @@
     "air_conditioned": "Klimatisiert",
     "show_map": "Karte anzeigen",
     "close": "Schließen",
-    "open_in_osm": "In OpenStreetMap öffnen"
+    "open_in_osm": "In OpenStreetMap öffnen",
+    "map_updated": "Aktualisiert",
+    "map_error": "Kartendaten nicht verfügbar"
   },
   "editor": {
     "entity": "Abfahrtstafel-Sensor",
