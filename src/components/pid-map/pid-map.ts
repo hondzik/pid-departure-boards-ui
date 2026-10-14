@@ -160,7 +160,8 @@ export class PidMap extends LitElement {
         justify-content: center;
         width: 28px;
         height: 28px;
-        border: 2px solid #fff;
+        --pid-border: #fff;
+        border: 2px solid var(--pid-border);
         border-radius: 50%;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
         font-size: 11px;
@@ -188,7 +189,8 @@ export class PidMap extends LitElement {
         margin-left: -4px;
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
-        border-bottom: 7px solid var(--pid-color, #0072bc);
+        border-bottom: 7px solid var(--pid-border, #fff);
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.6));
       }
     `,
   ];
@@ -229,7 +231,9 @@ export class PidMap extends LitElement {
     this._vehicleLayer.addTo(this._map);
     this._map.setView(hasCenter ? [this.latitude as number, this.longitude as number] : DEFAULT_CENTER, hasCenter ? 16 : 12);
     if (hasCenter) {
-      L.circleMarker([this.latitude as number, this.longitude as number], { radius: 7, color: '#fff', weight: 2, fillColor: '#d32f2f', fillOpacity: 1 }).addTo(this._map);
+      // its own pane: above the route lines (overlay pane, 400), below the vehicles (marker pane, 600)
+      this._map.createPane('stop').style.zIndex = '450';
+      L.circleMarker([this.latitude as number, this.longitude as number], { pane: 'stop', radius: 7, color: '#fff', weight: 2, fillColor: '#d32f2f', fillOpacity: 1 }).addTo(this._map);
     }
     // the dialog animates open, so the size is only final later
     this._resizeObserver = new ResizeObserver(() => this._map?.invalidateSize());
