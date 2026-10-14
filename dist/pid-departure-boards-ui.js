@@ -346,7 +346,7 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
     --mdc-dialog-min-width: min(92vw, 640px);
     --mdc-dialog-max-width: min(92vw, 640px);
   }
-`;let Ve=class extends dt{constructor(){super(...arguments),this._config={type:"custom:pid-departure-boards-ui-departures-card",entity:""},this._titleChanged=t=>{const e=t.target.value;this._update({title:e||void 0})}}setConfig(t){this._config={...t}}render(){if(!this.hass)return V``;const t=be(this.hass),e=this._config,i=["time","countdown","both"].map(e=>({value:e,label:t(`editor.time_display_${e}`)}));return V`
+`;let Ve=class extends dt{constructor(){super(...arguments),this._config={type:"custom:pid-departure-boards-ui-departures-card",entity:""}}setConfig(t){this._config={...t}}render(){if(!this.hass)return V``;const t=be(this.hass),e=this._config,i=["time","countdown","both"].map(e=>({value:e,label:t(`editor.time_display_${e}`)}));return V`
       <div class="card-config">
         <ha-selector
           .hass=${this.hass}
@@ -356,7 +356,7 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
           @value-changed=${this._changed("entity")}
         ></ha-selector>
 
-        <ha-textfield .label=${t("editor.title")} .value=${e.title??""} @input=${this._titleChanged}></ha-textfield>
+        <ha-selector .hass=${this.hass} .selector=${{text:{}}} .value=${e.title??""} .label=${t("editor.title")} @value-changed=${this._changed("title")}></ha-selector>
 
         <ha-selector
           .hass=${this.hass}
@@ -366,13 +366,21 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
           @value-changed=${this._changed("time_display")}
         ></ha-selector>
 
-        <ha-formfield .label=${t("editor.show_wheelchair")}>
-          <ha-switch .checked=${e.show_wheelchair??!0} @change=${this._switchChanged("show_wheelchair")}></ha-switch>
-        </ha-formfield>
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{boolean:{}}}
+          .value=${e.show_wheelchair??!0}
+          .label=${t("editor.show_wheelchair")}
+          @value-changed=${this._changed("show_wheelchair")}
+        ></ha-selector>
 
-        <ha-formfield .label=${t("editor.show_air_conditioned")}>
-          <ha-switch .checked=${e.show_air_conditioned??!0} @change=${this._switchChanged("show_air_conditioned")}></ha-switch>
-        </ha-formfield>
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{boolean:{}}}
+          .value=${e.show_air_conditioned??!0}
+          .label=${t("editor.show_air_conditioned")}
+          @value-changed=${this._changed("show_air_conditioned")}
+        ></ha-selector>
 
         <ha-selector
           .hass=${this.hass}
@@ -390,7 +398,7 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
           @value-changed=${this._changed("max_departures")}
         ></ha-selector>
       </div>
-    `}_changed(t){return e=>{e.stopPropagation(),this._update({[t]:e.detail.value})}}_switchChanged(t){return e=>this._update({[t]:e.target.checked})}_update(t){const e={...this._config,...t};for(const t of Object.keys(e))void 0===e[t]&&delete e[t];this._config=e,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:e},bubbles:!0,composed:!0}))}};Ve.styles=h`
+    `}_changed(t){return e=>{e.stopPropagation(),this._update({[t]:""===e.detail.value?void 0:e.detail.value})}}_update(t){const e={...this._config,...t};for(const t of Object.keys(e))void 0===e[t]&&delete e[t];this._config=e,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:e},bubbles:!0,composed:!0}))}};Ve.styles=h`
     .card-config {
       display: flex;
       flex-direction: column;
@@ -419,8 +427,8 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
         </div>
       </ha-card>
       ${this._mapOpen?this._renderMap(i,a,t):G}
-    `}_renderMap(t,e,i){const n=function(t){return"number"==typeof t?.latitude&&"number"==typeof t?.longitude&&Number.isFinite(t.latitude)&&Number.isFinite(t.longitude)}(t)?t:void 0;return V`
-      <ha-dialog class="map-dialog" open .heading=${t.platform?`${e} ${t.platform}`:e} @closed=${this._closeMap}>
+    `}_renderMap(t,e,i){const n=function(t){return"number"==typeof t?.latitude&&"number"==typeof t?.longitude&&Number.isFinite(t.latitude)&&Number.isFinite(t.longitude)}(t)?t:void 0,o=t.stop_name||e;return V`
+      <ha-dialog class="map-dialog" open .heading=${t.platform?`${o} ${t.platform}`:o} @closed=${this._closeMap}>
         <pid-departure-boards-ui-map
           .hass=${this.hass}
           .entity=${this._config?.entity??""}

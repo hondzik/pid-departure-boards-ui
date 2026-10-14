@@ -196,8 +196,10 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
 
   private _renderMap(attrs: PidSensorAttributes, title: string, localize: (key: string) => string): TemplateResult {
     const coordinates = hasCoordinates(attrs) ? attrs : undefined;
+    // the popup is titled with the stop itself, not with a custom card title
+    const stopName = attrs.stop_name || title;
     return html`
-      <ha-dialog class="map-dialog" open .heading=${attrs.platform ? `${title} ${attrs.platform}` : title} @closed=${this._closeMap}>
+      <ha-dialog class="map-dialog" open .heading=${attrs.platform ? `${stopName} ${attrs.platform}` : stopName} @closed=${this._closeMap}>
         <pid-departure-boards-ui-map
           .hass=${this.hass}
           .entity=${this._config?.entity ?? ''}

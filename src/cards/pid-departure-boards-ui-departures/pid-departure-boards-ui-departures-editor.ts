@@ -43,7 +43,7 @@ export class PidDeparturesEditor extends LitElement {
           @value-changed=${this._changed('entity')}
         ></ha-selector>
 
-        <ha-textfield .label=${localize('editor.title')} .value=${config.title ?? ''} @input=${this._titleChanged}></ha-textfield>
+        <ha-selector .hass=${this.hass} .selector=${{ text: {} }} .value=${config.title ?? ''} .label=${localize('editor.title')} @value-changed=${this._changed('title')}></ha-selector>
 
         <ha-selector
           .hass=${this.hass}
@@ -53,13 +53,21 @@ export class PidDeparturesEditor extends LitElement {
           @value-changed=${this._changed('time_display')}
         ></ha-selector>
 
-        <ha-formfield .label=${localize('editor.show_wheelchair')}>
-          <ha-switch .checked=${config.show_wheelchair ?? true} @change=${this._switchChanged('show_wheelchair')}></ha-switch>
-        </ha-formfield>
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{ boolean: {} }}
+          .value=${config.show_wheelchair ?? true}
+          .label=${localize('editor.show_wheelchair')}
+          @value-changed=${this._changed('show_wheelchair')}
+        ></ha-selector>
 
-        <ha-formfield .label=${localize('editor.show_air_conditioned')}>
-          <ha-switch .checked=${config.show_air_conditioned ?? true} @change=${this._switchChanged('show_air_conditioned')}></ha-switch>
-        </ha-formfield>
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{ boolean: {} }}
+          .value=${config.show_air_conditioned ?? true}
+          .label=${localize('editor.show_air_conditioned')}
+          @value-changed=${this._changed('show_air_conditioned')}
+        ></ha-selector>
 
         <ha-selector
           .hass=${this.hass}
@@ -83,18 +91,10 @@ export class PidDeparturesEditor extends LitElement {
   private _changed(key: keyof PidDeparturesCardConfig) {
     return (ev: CustomEvent<{ value: unknown }>): void => {
       ev.stopPropagation();
-      this._update({ [key]: ev.detail.value });
+      // a cleared text field removes the option
+      this._update({ [key]: ev.detail.value === '' ? undefined : ev.detail.value });
     };
   }
-
-  private _switchChanged(key: 'show_wheelchair' | 'show_air_conditioned') {
-    return (ev: Event): void => this._update({ [key]: (ev.target as HTMLInputElement).checked });
-  }
-
-  private _titleChanged = (ev: Event): void => {
-    const value = (ev.target as HTMLInputElement).value;
-    this._update({ title: value || undefined });
-  };
 
   private _update(patch: Partial<PidDeparturesCardConfig>): void {
     const config = { ...this._config, ...patch } as PidDeparturesCardConfig;
