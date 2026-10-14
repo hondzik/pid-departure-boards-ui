@@ -222,10 +222,4 @@ export const PidDeparturesCardStyles: CSSResultGroup = css`
   .empty {
     color: var(--secondary-text-color);
   }
-
-  /* width of the map popup; the map inside fills it (no horizontal scrollbar) */
-  .map-dialog {
-    --mdc-dialog-min-width: min(92vw, 640px);
-    --mdc-dialog-max-width: min(92vw, 640px);
-  }
 `;

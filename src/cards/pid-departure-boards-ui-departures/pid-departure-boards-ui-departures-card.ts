@@ -199,14 +199,17 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
     // the popup is titled with the stop itself, not with a custom card title
     const stopName = attrs.stop_name || title;
     return html`
-      <ha-dialog class="map-dialog" open .heading=${attrs.platform ? `${stopName} ${attrs.platform}` : stopName} @closed=${this._closeMap}>
+      <!-- ha-dialog of Home Assistant 2026.10 (Web Awesome): the title is the header-title attribute, the width a preset -->
+      <ha-dialog open width="large" header-title=${attrs.platform ? `${stopName} ${attrs.platform}` : stopName} @closed=${this._closeMap}>
         <pid-departure-boards-ui-map
           .hass=${this.hass}
           .entity=${this._config?.entity ?? ''}
           .latitude=${coordinates?.latitude}
           .longitude=${coordinates?.longitude}
         ></pid-departure-boards-ui-map>
-        <ha-button slot="primaryAction" @click=${this._closeMap}>${localize('card.close')}</ha-button>
+        <ha-dialog-footer slot="footer">
+          <ha-button slot="primaryAction" @click=${this._closeMap}>${localize('card.close')}</ha-button>
+        </ha-dialog-footer>
       </ha-dialog>
     `;
   }

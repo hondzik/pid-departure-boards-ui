@@ -340,12 +340,6 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
   .empty {
     color: var(--secondary-text-color);
   }
-
-  /* width of the map popup; the map inside fills it (no horizontal scrollbar) */
-  .map-dialog {
-    --mdc-dialog-min-width: min(92vw, 640px);
-    --mdc-dialog-max-width: min(92vw, 640px);
-  }
 `;let Ve=class extends dt{constructor(){super(...arguments),this._config={type:"custom:pid-departure-boards-ui-departures-card",entity:""}}setConfig(t){this._config={...t}}render(){if(!this.hass)return V``;const t=be(this.hass),e=this._config,i=["time","countdown","both"].map(e=>({value:e,label:t(`editor.time_display_${e}`)}));return V`
       <div class="card-config">
         <ha-selector
@@ -428,14 +422,17 @@ var t="https://github.com/hondzik/pid-departure-boards-ui";function e(t,e,i,n){v
       </ha-card>
       ${this._mapOpen?this._renderMap(i,a,t):G}
     `}_renderMap(t,e,i){const n=function(t){return"number"==typeof t?.latitude&&"number"==typeof t?.longitude&&Number.isFinite(t.latitude)&&Number.isFinite(t.longitude)}(t)?t:void 0,o=t.stop_name||e;return V`
-      <ha-dialog class="map-dialog" open .heading=${t.platform?`${o} ${t.platform}`:o} @closed=${this._closeMap}>
+      <!-- ha-dialog of Home Assistant 2026.10 (Web Awesome): the title is the header-title attribute, the width a preset -->
+      <ha-dialog open width="large" header-title=${t.platform?`${o} ${t.platform}`:o} @closed=${this._closeMap}>
         <pid-departure-boards-ui-map
           .hass=${this.hass}
           .entity=${this._config?.entity??""}
           .latitude=${n?.latitude}
           .longitude=${n?.longitude}
         ></pid-departure-boards-ui-map>
-        <ha-button slot="primaryAction" @click=${this._closeMap}>${i("card.close")}</ha-button>
+        <ha-dialog-footer slot="footer">
+          <ha-button slot="primaryAction" @click=${this._closeMap}>${i("card.close")}</ha-button>
+        </ha-dialog-footer>
       </ha-dialog>
     `}_renderDeparture(t,e){const i=this._config,n=i.time_display??"both",o=xe(t),r=this.hass?.locale?.language??"en",s=o?function(t,e){return Math.floor((t.getTime()-e.getTime())/6e4)}(o,this._now):void 0,a=void 0===s?"":s<=0?e("card.now"):`${s} ${e("card.min")}`,h=function(t){const e=t.scheduled??t.predicted;if(!e)return;const i=new Date(e);return Number.isNaN(i.getTime())?void 0:i}(t),l=h?function(t,e,i){return new Intl.DateTimeFormat(e,{hour:"2-digit",minute:"2-digit",hour12:!1,timeZone:i}).format(t)}(h,r,this.hass?.config?.time_zone):"",d=i.show_wheelchair??!0,c=i.show_air_conditioned??!0,u=t.canceled?e("card.canceled"):"",p=t.at_stop&&!t.canceled;return V`
       <tr class=${t.canceled?"canceled":p?"at-stop":""} title=${p?e("card.at_stop"):G}>
