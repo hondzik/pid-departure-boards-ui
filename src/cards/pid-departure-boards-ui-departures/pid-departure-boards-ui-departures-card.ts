@@ -255,6 +255,7 @@ window.customCards.push({
   name: 'PID Departure Board',
   description: 'Departure board for a PID stop (pid_departure_boards integration)',
   preview: false,
+  documentationURL: 'https://github.com/hondzik/pid-departure-boards-ui',
   // suggested in the "add card" dialog after picking an entity (getStubConfig only serves the "all cards" list)
   getEntitySuggestion: (hass, entityId) => PidDeparturesCard.getEntitySuggestion(hass, entityId),
 });
