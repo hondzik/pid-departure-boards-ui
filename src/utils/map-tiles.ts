@@ -21,7 +21,8 @@ export async function fetchTileToken(hass: HomeAssistant): Promise<string | unde
   return result?.token || undefined;
 }
 
-// Absolute URL of the proxy on this instance (concatenated, so `{z}` and `{token}` stay unencoded).
+// Absolute URL of the proxy on this instance (concatenated, so `{z}` and `{token}` stay unencoded); hass.hassUrl() is the instance URL the
+// frontend itself talks to (differs from location.origin e.g. in the Companion app or on Cast).
 export function proxyTileUrl(origin: string = location.origin): string {
   return `${origin.replace(/\/+$/, '')}${PROXY_TILE_URL}`;
 }

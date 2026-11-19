@@ -17,18 +17,19 @@ import {
   scheduledTime,
   visibleDepartures,
 } from '../../utils/departures';
+import { hassAffectsCard } from '../../utils/hass-changes';
 import { hasCoordinates } from '../../utils/map';
 import { INTEGRATION, refreshScheduler } from '../../utils/refresh-scheduler';
 import { PidDeparturesCardStyles } from './pid-departure-boards-ui-departures-styles';
-import type { HomeAssistant } from 'custom-card-helpers';
-import type { CSSResultGroup, TemplateResult } from 'lit';
+import type { HomeAssistant, LovelaceCard } from 'custom-card-helpers';
+import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit';
 import './pid-departure-boards-ui-departures-editor';
 
 const CARD_TAG = 'pid-departure-boards-ui-departures-card';
 const DEFAULT_REFRESH_LEAD_MIN = 5;
 
 function isPidEntity(hass: HomeAssistant, entityId: string): boolean {
-  return (hass as unknown as HassWithRegistry).entities?.[entityId]?.platform === INTEGRATION;
+  return hass.entities?.[entityId]?.platform === INTEGRATION;
 }
 
 @customElement(CARD_TAG)
@@ -141,6 +142,15 @@ export class PidDeparturesCard extends LitElement implements LovelaceCard {
       this._openMap();
     }
   };
+
+  // hass is replaced on every state change in the whole instance; redraw for it only when something the card shows has changed
+  // (own state — config, clock tick, refresh, map — always redraws)
+  protected shouldUpdate(changed: PropertyValues): boolean {
+    if ([...changed.keys()].some((key) => key !== 'hass')) return true;
+    const previous = changed.get('hass') as HomeAssistant | undefined;
+    if (!previous || !this.hass || !this._config) return true;
+    return hassAffectsCard(previous, this.hass, this._config.entity);
+  }
 
   protected render(): TemplateResult {
     const localize = setupCustomlocalize(this.hass);

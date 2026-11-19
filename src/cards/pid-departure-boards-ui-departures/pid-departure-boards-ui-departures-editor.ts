@@ -1,13 +1,14 @@
+import { fireEvent } from 'custom-card-helpers';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import setupCustomlocalize from '../../localize';
-import type { HomeAssistant } from 'custom-card-helpers';
+import type { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
 import type { CSSResultGroup, TemplateResult } from 'lit';
 
 const CARD_TYPE = 'custom:pid-departure-boards-ui-departures-card';
 
 @customElement('pid-departure-boards-ui-departures-editor')
-export class PidDeparturesEditor extends LitElement {
+export class PidDeparturesEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false })
   public hass?: HomeAssistant;
 
@@ -102,6 +103,6 @@ export class PidDeparturesEditor extends LitElement {
       if (config[key] === undefined) delete config[key];
     }
     this._config = config;
-    this.dispatchEvent(new CustomEvent('config-changed', { detail: { config }, bubbles: true, composed: true }));
+    fireEvent(this, 'config-changed', { config });
   }
 }

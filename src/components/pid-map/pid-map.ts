@@ -273,7 +273,9 @@ export class PidMap extends LitElement {
       return;
     }
     // Leaflet substitutes unknown options into the template, its types don't know that
-    this._tiles = L.tileLayer(proxyTileUrl(), { maxZoom: 20, maxNativeZoom: TILE_MAX_NATIVE_ZOOM, attribution: TILE_ATTRIBUTION, token } as L.TileLayerOptions).addTo(this._map);
+    this._tiles = L.tileLayer(proxyTileUrl(this.hass?.hassUrl()), { maxZoom: 20, maxNativeZoom: TILE_MAX_NATIVE_ZOOM, attribution: TILE_ATTRIBUTION, token } as L.TileLayerOptions).addTo(
+      this._map,
+    );
     this._tiles.on('tileerror', () => void this._refreshToken(true));
     this._tokenTimer = window.setInterval(() => void this._refreshToken(false), TOKEN_REFRESH_MS);
   }
