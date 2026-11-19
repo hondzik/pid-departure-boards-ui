@@ -7,11 +7,6 @@ declare global {
     customCards: CustomCard[];
   }
 
-  // fireEvent(this, 'config-changed', { config }) from custom-card-helpers is typed through this map
-  interface HASSDomEvents {
-    'config-changed': { config: LovelaceCardConfig };
-  }
-
   interface CustomCard {
     type: string;
     name: string;
